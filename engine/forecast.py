@@ -3,7 +3,9 @@
 Prefers reading the committed cache at engine/cache/forecast.json so the engine
 never depends on network or server disk writes at runtime. If missing or stale,
 falls back to a live Open-Meteo fetch in memory only with a short timeout.
-On any failure, returns a safe default forecast.
+If the cache is stale and live fetch fails, falls back to using the stale cache
+with source label "stale-cache" to degrade confidence. On total failure,
+returns a safe default forecast.
 """
 from __future__ import annotations
 
@@ -79,8 +81,10 @@ def load_forecast() -> Tuple[dict, str]:
 
     Prefers the on-disk cache at engine/cache/forecast.json without writing to disk.
     If the cache is missing or stale, attempts a live in-memory fetch with short
-    timeout (never writing to disk). On any failure, returns cached data if available
-    or a safe default forecast.
+    timeout (never writing to disk).
+    If the cache is stale and the live fetch fails, uses the stale file and returns
+    source label "stale-cache" so confidence scoring can lower the score with a note.
+    On total failure, returns a safe default forecast.
     """
     cached_data = None
     if FORECAST_CACHE.exists():
@@ -98,7 +102,7 @@ def load_forecast() -> Tuple[dict, str]:
         return data, "open-meteo"
     except Exception:
         if cached_data is not None:
-            return cached_data, "cache"
+            return cached_data, "stale-cache"
         return _default_forecast(), "default-fallback"
 
 

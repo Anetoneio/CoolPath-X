@@ -117,7 +117,7 @@ def _resolution_score(heat_grid: dict) -> int:
 
 def _forecast_age_score(forecast: dict, source_label: str) -> int:
     cached_at = forecast.get("_cached_at")
-    if source_label == "default-fallback":
+    if source_label in ("default-fallback", "stale-cache"):
         return FORECAGE_SCORE_OLD
     if not cached_at:
         return FORECAGE_SCORE_STALE
@@ -181,6 +181,8 @@ def confidence(heat_grid_source: str, forecast_source: str) -> dict:
         notes.append(f"Average cloud cover {avg_cloud}% across grid cells.")
     if forecast_source == "default-fallback":
         notes.append("Forecast from safe default (Open-Meteo unavailable); forecast_age reduced.")
+    elif forecast_source == "stale-cache":
+        notes.append("Forecast served from stale cache (live fetch failed); forecast_age reduced.")
     elif forecast_source == "open-meteo":
         notes.append("Forecast freshly fetched from Open-Meteo and cached.")
     elif forecast_source == "cache":
