@@ -15,8 +15,20 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-SUMMARY_EXPOSURE_DIFF_RATIO = 0.8  # PLACEHOLDER - pending A1 verification
-SUMMARY_EXPOSURE_DIFF_PCT = 20   # PLACEHOLDER - pending A1 verification
+SUMMARY_EXPOSURE_DIFF_PCT = 20  # PLACEHOLDER - pending A1 verification
+
+
+def _simulate_summary(a: dict, b: dict) -> str:
+    ea, eb = a["total_exposure"], b["total_exposure"]
+    hi = max(ea, eb)
+    if hi <= 0 or ea == eb:
+        return "Both options have the same estimated exposure."
+    diff_pct = round(abs(ea - eb) / hi * 100)
+    if diff_pct < SUMMARY_EXPOSURE_DIFF_PCT:
+        return (f"Estimated exposure differs by only {diff_pct}% between "
+                f"A and B (below the {SUMMARY_EXPOSURE_DIFF_PCT}% threshold).")
+    lower = "A" if ea < eb else "B"
+    return f"Option {lower} has about {diff_pct}% lower estimated exposure (estimate)."
 
 from data_access import load_json, load_response
 from forecast import load_forecast
@@ -196,11 +208,7 @@ def post_simulate(payload: dict):
     config_b = payload.get("config_b", {})
     a = simulate_one(config_a)
     b = simulate_one(config_b)
-    summary = (
-        f"Earlier start reduces estimated exposure by {SUMMARY_EXPOSURE_DIFF_PCT}%"
-        if a["total_exposure"] > b["total_exposure"] * SUMMARY_EXPOSURE_DIFF_RATIO
-        else f"Exposure difference within {SUMMARY_EXPOSURE_DIFF_PCT}%"
-    )
+    summary = _simulate_summary(a, b)
     return JSONResponse(content={"a": a, "b": b, "summary": summary})
 
 
