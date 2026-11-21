@@ -22,6 +22,28 @@ from config import POLICY_FILE
 from scoring import site_exposure
 
 
+# ---------------------------------------------------------------------------
+# Documented placeholders (pending A1 verification of policy.yaml thresholds).
+# policy.yaml intensity_limits values are TODO_VERIFY strings; these
+# conservative fallbacks are used only when the file value is missing or
+# "TODO_VERIFY". Shorter work blocks + longer rests = conservative.
+# ---------------------------------------------------------------------------
+FALLBACK_MAX_WORK_MIN = {  # PLACEHOLDER - pending A1 verification
+    "heavy": 90,
+    "moderate": 120,
+    "light": 180,
+}
+FALLBACK_REST_MIN = {  # PLACEHOLDER - pending A1 verification
+    "heavy": 20,
+    "moderate": 15,
+    "light": 10,
+}
+
+DEFAULT_DURATION_MIN = 60  # PLACEHOLDER - pending A1 verification
+DEFAULT_CONFIDENCE = 0.75  # PLACEHOLDER - pending A1 verification
+REST_LIMITS_POLICY_NOTE = " rest limits pending policy.yaml verification."
+
+
 def _load_policy() -> dict:
     with open(POLICY_FILE, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
@@ -31,12 +53,10 @@ def _intensity_limits(policy: dict, intensity: str) -> dict:
     limits = (policy.get("intensity_limits", {}) or {}).get(intensity, {})
     max_work = limits.get("max_continuous_work_min")
     rest = limits.get("rest_min")
-    # policy.yaml values are TODO_VERIFY strings; fall back to conservative
-    # documented placeholders when missing or unverified.
     if max_work is None or max_work == "TODO_VERIFY":
-        max_work = {"heavy": 90, "moderate": 120, "light": 180}.get(intensity, 120)
+        max_work = FALLBACK_MAX_WORK_MIN.get(intensity, 120)
     if rest is None or rest == "TODO_VERIFY":
-        rest = {"heavy": 20, "moderate": 15, "light": 10}.get(intensity, 15)
+        rest = FALLBACK_REST_MIN.get(intensity, 15)
     return {"max_continuous_work_min": int(max_work), "rest_min": int(rest)}
 
 
@@ -107,7 +127,7 @@ def schedule(
         site = site_by_id.get(sid)
         if site is None:
             continue
-        duration = int(site.get("duration_min", 60))
+        duration = int(site.get("duration_min", DEFAULT_DURATION_MIN))
         intensity = site.get("intensity", "moderate")
         limits = _intensity_limits(policy, intensity)
         max_work = limits["max_continuous_work_min"]
@@ -119,8 +139,9 @@ def schedule(
             continue
 
         start = crew_cursor
-        end = _add_minutes(crew_cursor, duration)
 
+        # Schedule work in max_work blocks with rest breaks between blocks.
+        # end reflects the actual completion time (work + rests).
         rest_breaks: list[dict] = []
         work_remaining = duration
         work_cursor = crew_cursor
@@ -139,19 +160,18 @@ def schedule(
             else:
                 break
 
-        crew_cursor = end
-        for rb in rest_breaks:
-            if _time_to_minutes(rb["end"]) > _time_to_minutes(crew_cursor):
-                crew_cursor = rb["end"]
+        end = work_cursor  # includes any rest breaks taken during the job
 
-        policy_note = " rest limits pending policy.yaml verification."
+        crew_cursor = end
+
+        policy_note = REST_LIMITS_POLICY_NOTE
         reason = (
             f"{base_reason} "
-            f"Scheduled {start}-{end} ({duration} min, {intensity}). "
+            f"Scheduled {start}-{end} ({duration} min work, {intensity}). "
             f"Rest every {limits['max_continuous_work_min']} min ({limits['rest_min']} min break).{policy_note}"
         )
 
-        confidence = 0.75
+        confidence = DEFAULT_CONFIDENCE
 
         assignments.append({
             "site_id": sid,

@@ -27,7 +27,7 @@ FORECAST_URL = (
     "&timezone=Asia/Kolkata"
 )
 
-DEFAULT_TEMP_C = 35.0  # conservative hot default when forecast unavailable
+DEFAULT_TEMP_C = 35.0  # PLACEHOLDER - pending A1 verification (conservative hot default)
 
 
 def _now_iso() -> str:

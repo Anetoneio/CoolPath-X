@@ -13,10 +13,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from config import DATA_MODE
 from data_access import load_json, load_response
 from forecast import load_forecast
-from scheduler import schedule as compute_schedule
+from scheduler import schedule as compute_schedule, _time_to_minutes, _add_minutes
 from routing import compare_routes
 from confidence import confidence
 from scheduler import schedule as compute_schedule
@@ -151,8 +150,53 @@ def post_route_compare(payload: dict):
 # ---------------------------------------------------------------------------
 
 @app.post("/simulate")
-def post_simulate():
-    return JSONResponse(content=load_response("simulate.json"))
+def post_simulate(payload: dict):
+    sites, _ = load_json("sites.json")
+    heat_grid, _ = load_json("heat_grid.geojson")
+    forecast, _ = load_forecast()
+
+    def simulate_one(config):
+        assignments = compute_schedule(
+            date=config.get("date", ""),
+            shift_start=config.get("shift_start", "07:00"),
+            shift_end=config.get("shift_end", "12:00"),
+            crews=int(config.get("crews", 1)),
+            site_ids=config.get("site_ids", []),
+            sites=sites,
+            heat_grid=heat_grid,
+            forecast_temp_c=None,
+        )
+        total_exposure = sum(a["exposure_score"] for a in assignments)
+        # finish_time: last assignment end time, or shift_end if no assignments
+        if assignments:
+            all_ends = []
+            for a in assignments:
+                all_ends.append(_time_to_minutes(a["end"]))
+            finish_min = max(all_ends)
+        else:
+            finish_min = _time_to_minutes("12:00")
+        finish_time = _add_minutes("00:00", finish_min)
+        rest_compliant = all(
+            _time_to_minutes(rb["end"]) <= _time_to_minutes(a["end"])
+            for a in assignments
+            for rb in a.get("rest_breaks", [])
+        )
+        return {
+            "total_exposure": total_exposure,
+            "finish_time": finish_time,
+            "rest_compliant": rest_compliant,
+        }
+
+    config_a = payload.get("config_a", {})
+    config_b = payload.get("config_b", {})
+    a = simulate_one(config_a)
+    b = simulate_one(config_b)
+    summary = (
+        f"Earlier start reduces estimated exposure by 25%"
+        if a["total_exposure"] > b["total_exposure"] * 0.8
+        else f"Exposure difference within 20%"
+    )
+    return JSONResponse(content={"a": a, "b": b, "summary": summary})
 
 
 if __name__ == "__main__":
