@@ -33,6 +33,10 @@ def main():
     print(f"   Heat cell count: {len(heat_cells)}")
     if heat_cells:
         sample_props = heat_cells[0]["properties"]
+        grid_source = sample_props.get("source", "unknown")
+        grid_acquired_on = sample_props.get("acquired_on", "unknown")
+        print(f"   Grid source: '{grid_source}' ({'REAL satellite data' if grid_source != 'proxy' else 'SYNTHETIC proxy'})")
+        print(f"   Grid acquired_on: {grid_acquired_on}")
         print(f"   Sample cell properties: {sample_props}")
 
     # 2. Validate facilities.geojson
