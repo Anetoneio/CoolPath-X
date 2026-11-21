@@ -17,7 +17,7 @@ try:
 except ImportError:  # pragma: no cover - insurance only
     _HAS_NETWORKX = False
 
-from scoring import cell_for_point, route_exposure
+from scoring import cell_for_point, route_exposure, nearest_cell_for_point, NEAREST_CELL_MAX_KM
 
 
 WATER_PROXIMITY_KM = 0.5  # PLACEHOLDER - pending A1 verification
@@ -44,6 +44,9 @@ def _segment_exposure(lon1: float, lat1: float, lon2: float, lat2: float,
     cell, _ = cell_for_point(mid_lon, mid_lat, heat_grid)
     if cell is not None:
         return float(cell.get("heat_index_0_100", 50))
+    nearest_cell, _, dist_m = nearest_cell_for_point(mid_lon, mid_lat, heat_grid)
+    if nearest_cell is not None and (dist_m / 1000.0) <= NEAREST_CELL_MAX_KM:
+        return float(nearest_cell.get("heat_index_0_100", 50))
     return 50.0
 
 

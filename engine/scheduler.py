@@ -19,7 +19,7 @@ from typing import Any
 import yaml
 
 from config import POLICY_FILE
-from scoring import site_exposure
+from scoring import site_exposure, NEAREST_CELL_CONFIDENCE_PENALTY
 
 
 # ---------------------------------------------------------------------------
@@ -119,7 +119,8 @@ def schedule(
 
     shift_start_min = _time_to_minutes(shift_start)
     shift_end_min = _time_to_minutes(shift_end)
-    crew_cursor = shift_start  # time string "HH:MM"
+    num_crews = max(1, int(crews))
+    crew_cursors = [shift_start_min] * num_crews
 
     assignments: list[dict] = []
 
@@ -135,34 +136,47 @@ def schedule(
 
         score, base_reason = site_scores[sid]
 
-        if _time_to_minutes(crew_cursor) + duration > shift_end_min:
+        # Find best available crew that can complete the job before shift_end_min
+        best_crew_idx = None
+        best_plan = None
+        best_cursor = float("inf")
+
+        for c_idx in range(num_crews):
+            c_start_min = crew_cursors[c_idx]
+            c_start_str = _add_minutes("00:00", c_start_min)
+
+            rest_breaks: list[dict] = []
+            work_remaining = duration
+            work_cursor = c_start_str
+            feasible = True
+
+            while work_remaining > 0:
+                work_block = min(work_remaining, max_work)
+                work_cursor = _add_minutes(work_cursor, work_block)
+                work_remaining -= work_block
+                if work_remaining > 0:
+                    rb_start = work_cursor
+                    rb_end = _add_minutes(rb_start, rest_min)
+                    if _time_to_minutes(rb_end) <= shift_end_min:
+                        rest_breaks.append({"start": rb_start, "end": rb_end})
+                        work_cursor = rb_end
+                    else:
+                        feasible = False
+                        break
+
+            end_str = work_cursor
+            if feasible and _time_to_minutes(end_str) <= shift_end_min:
+                if c_start_min < best_cursor:
+                    best_cursor = c_start_min
+                    best_crew_idx = c_idx
+                    best_plan = (c_start_str, end_str, rest_breaks)
+
+        if best_crew_idx is None:
+            # Cannot fit on any crew before shift_end_min
             continue
 
-        start = crew_cursor
-
-        # Schedule work in max_work blocks with rest breaks between blocks.
-        # end reflects the actual completion time (work + rests).
-        rest_breaks: list[dict] = []
-        work_remaining = duration
-        work_cursor = crew_cursor
-        while work_remaining > 0:
-            work_block = min(work_remaining, max_work)
-            work_cursor = _add_minutes(work_cursor, work_block)
-            work_remaining -= work_block
-            if work_remaining > 0:
-                rb_start = work_cursor
-                rb_end = _add_minutes(rb_start, rest_min)
-                if _time_to_minutes(rb_end) <= shift_end_min:
-                    rest_breaks.append({"start": rb_start, "end": rb_end})
-                    work_cursor = rb_end
-                else:
-                    break
-            else:
-                break
-
-        end = work_cursor  # includes any rest breaks taken during the job
-
-        crew_cursor = end
+        start, end, rest_breaks = best_plan
+        crew_cursors[best_crew_idx] = _time_to_minutes(end)
 
         policy_note = REST_LIMITS_POLICY_NOTE
         reason = (
@@ -172,6 +186,8 @@ def schedule(
         )
 
         confidence = DEFAULT_CONFIDENCE
+        if "nearest-cell" in base_reason.lower() or "mid-range" in base_reason.lower():
+            confidence = max(0.0, DEFAULT_CONFIDENCE - NEAREST_CELL_CONFIDENCE_PENALTY)
 
         assignments.append({
             "site_id": sid,
@@ -183,4 +199,5 @@ def schedule(
             "confidence": round(confidence, 2),
         })
 
+    assignments.sort(key=lambda a: (_time_to_minutes(a["start"]), a["site_id"]))
     return assignments

@@ -15,6 +15,7 @@ hardcoded as an authoritative WBGT constant.
 
 from __future__ import annotations
 
+import math
 from typing import Tuple
 
 # ---------------------------------------------------------------------------
@@ -34,6 +35,9 @@ INTENSITY_HEAVY_BONUS: int = 5  # PLACEHOLDER - pending A1 verification
 INTENSITY_LIGHT_PENALTY: int = 5  # PLACEHOLDER - pending A1 verification
 
 MID_RANGE_EXPOSURE: int = 50  # PLACEHOLDER - pending A1 verification
+
+NEAREST_CELL_MAX_KM: float = 1.0  # PLACEHOLDER - pending A1 verification
+NEAREST_CELL_CONFIDENCE_PENALTY: float = 0.15  # PLACEHOLDER - pending A1 verification
 
 
 def point_in_polygon(lon: float, lat: float, polygon: list) -> bool:
@@ -71,6 +75,75 @@ def cell_for_point(
     return None, None
 
 
+def point_to_polygon_distance_m(lon: float, lat: float, polygon: list) -> float:
+    """Compute distance in meters from (lon, lat) to polygon outer boundary.
+    Returns 0.0 if the point is inside the polygon.
+    """
+    if point_in_polygon(lon, lat, polygon):
+        return 0.0
+
+    m_per_deg_lat = 111320.0
+    m_per_deg_lon = 111320.0 * math.cos(math.radians(lat))
+
+    px = lon * m_per_deg_lon
+    py = lat * m_per_deg_lat
+
+    min_dist_sq = float("inf")
+    n = len(polygon)
+    for i in range(n - 1):
+        x1 = polygon[i][0] * m_per_deg_lon
+        y1 = polygon[i][1] * m_per_deg_lat
+        x2 = polygon[i + 1][0] * m_per_deg_lon
+        y2 = polygon[i + 1][1] * m_per_deg_lat
+
+        dx = x2 - x1
+        dy = y2 - y1
+        seg_len_sq = dx * dx + dy * dy
+        if seg_len_sq == 0:
+            d_sq = (px - x1) ** 2 + (py - y1) ** 2
+        else:
+            t = max(0.0, min(1.0, ((px - x1) * dx + (py - y1) * dy) / seg_len_sq))
+            proj_x = x1 + t * dx
+            proj_y = y1 + t * dy
+            d_sq = (px - proj_x) ** 2 + (py - proj_y) ** 2
+        if d_sq < min_dist_sq:
+            min_dist_sq = d_sq
+
+    return math.sqrt(min_dist_sq)
+
+
+def nearest_cell_for_point(
+    lon: float, lat: float, heat_grid: dict
+) -> Tuple[dict | None, int | None, float]:
+    """Return (cell_properties, feature_index, distance_m) for the nearest heat cell.
+    If point is inside a cell, distance_m is 0.0.
+    If grid has no polygon features, returns (None, None, float('inf')).
+    """
+    cell, idx = cell_for_point(lon, lat, heat_grid)
+    if cell is not None:
+        return cell, idx, 0.0
+
+    features = heat_grid.get("features", [])
+    best_cell = None
+    best_idx = None
+    best_dist_m = float("inf")
+
+    for i, feat in enumerate(features):
+        geom = feat.get("geometry", {})
+        if geom.get("type") != "Polygon":
+            continue
+        rings = geom.get("coordinates", [])
+        if not rings:
+            continue
+        dist_m = point_to_polygon_distance_m(lon, lat, rings[0])
+        if dist_m < best_dist_m:
+            best_dist_m = dist_m
+            best_cell = feat.get("properties", {})
+            best_idx = i
+
+    return best_cell, best_idx, best_dist_m
+
+
 def site_exposure(
     site: dict,
     heat_grid: dict,
@@ -79,20 +152,29 @@ def site_exposure(
     """Score a single site's heat exposure (0-100 estimate).
 
     Base score comes from the containing heat grid cell's heat_index_0_100,
-    blended with lst_c. Adjusted by forecast temperature at shift time.
+    blended with lst_c. If outside all cells, uses the nearest cell if within
+    NEAREST_CELL_MAX_KM. Adjusted by forecast temperature at shift time.
 
     Returns (score, reason).
     """
     lon = float(site["lon"])
     lat = float(site["lat"])
     cell, _ = cell_for_point(lon, lat, heat_grid)
+    is_nearest_estimate = False
+    nearest_dist_m = 0.0
 
     if cell is None:
-        return (
-            MID_RANGE_EXPOSURE,
-            f"No heat-grid cell covers {site['site_id']} "
-            f"({lat:.4f}, {lon:.4f}); using mid-range estimate.",
-        )
+        nearest_cell, _, dist_m = nearest_cell_for_point(lon, lat, heat_grid)
+        if nearest_cell is not None and (dist_m / 1000.0) <= NEAREST_CELL_MAX_KM:
+            cell = nearest_cell
+            is_nearest_estimate = True
+            nearest_dist_m = dist_m
+        else:
+            return (
+                MID_RANGE_EXPOSURE,
+                f"No heat-grid cell covers {site['site_id']} "
+                f"({lat:.4f}, {lon:.4f}); using mid-range estimate.",
+            )
 
     heat_index = float(cell.get("heat_index_0_100", MID_RANGE_EXPOSURE))
     lst_c = float(cell.get("lst_c", 40.0))
@@ -101,10 +183,15 @@ def site_exposure(
     lst_component = max(0.0, min(100.0, (lst_c - LST_MIN_C) / LST_RANGE_C * 100.0))
     base = round(HEAT_INDEX_WEIGHT * heat_index + LST_WEIGHT * lst_component)
 
-    reason_parts = [
+    reason_parts = []
+    if is_nearest_estimate:
+        reason_parts.append(
+            f"Nearest-cell estimate from {cell.get('cell_id', '?')} ({nearest_dist_m:.0f}m away)"
+        )
+    reason_parts.append(
         f"Cell {cell.get('cell_id', '?')} LST {lst_c:.1f}C, "
         f"heat index {heat_index:.0f}/100"
-    ]
+    )
 
     if forecast_temp_c is not None:
         adjustment = round(FORECAST_TEMP_ADJUSTMENT_PER_DEG_C * max(
@@ -172,6 +259,14 @@ def route_exposure(
             if cell_exposure > hottest_exposure:
                 hottest_exposure = cell_exposure
                 hottest_cell_id = cell_id
+        else:
+            nearest_cell, _, dist_m = nearest_cell_for_point(mid_lon, mid_lat, heat_grid)
+            if nearest_cell is not None and (dist_m / 1000.0) <= NEAREST_CELL_MAX_KM:
+                cell_exposure = float(nearest_cell.get("heat_index_0_100", MID_RANGE_EXPOSURE))
+                cell_id = f"{nearest_cell.get('cell_id', '?')} (nearest)"
+                if cell_exposure > hottest_exposure:
+                    hottest_exposure = cell_exposure
+                    hottest_cell_id = cell_id
 
         weighted_sum += cell_exposure * seg_len
         total_length += seg_len

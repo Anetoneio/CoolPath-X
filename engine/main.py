@@ -88,6 +88,23 @@ def get_confidence():
     return JSONResponse(content=result)
 
 
+def _get_forecast_temp_at_hour(forecast: dict, shift_start: str) -> float | None:
+    try:
+        sh = int(shift_start.split(":")[0])
+    except (ValueError, AttributeError):
+        sh = 7
+    hourly = forecast.get("hourly", {})
+    times = hourly.get("time", [])
+    temps = hourly.get("temperature_2m", [])
+    for t, temp in zip(times, temps):
+        try:
+            if int(t[11:13]) == sh:
+                return float(temp)
+        except (ValueError, IndexError, TypeError):
+            continue
+    return None
+
+
 # ---------------------------------------------------------------------------
 # POST /schedule — greedy rule-based scheduler.
 # ---------------------------------------------------------------------------
@@ -104,22 +121,7 @@ def post_schedule(payload: dict):
     crews = int(payload.get("crews", 1))
     site_ids = payload.get("site_ids", [])
 
-    # Forecast temperature at shift start hour for exposure adjustment.
-    try:
-        sh = int(shift_start.split(":")[0])
-    except (ValueError, AttributeError):
-        sh = 7
-    forecast_temp_c = None
-    hourly = forecast.get("hourly", {})
-    times = hourly.get("time", [])
-    temps = hourly.get("temperature_2m", [])
-    for t, temp in zip(times, temps):
-        try:
-            if int(t[11:13]) == sh:
-                forecast_temp_c = float(temp)
-                break
-        except (ValueError, IndexError, TypeError):
-            continue
+    forecast_temp_c = _get_forecast_temp_at_hour(forecast, shift_start)
 
     assignments = compute_schedule(
         date=date,
@@ -170,15 +172,17 @@ def post_simulate(payload: dict):
     forecast, _ = load_forecast()
 
     def simulate_one(config):
+        shift_start = config.get("shift_start", "07:00")
+        forecast_temp_c = _get_forecast_temp_at_hour(forecast, shift_start)
         assignments = compute_schedule(
             date=config.get("date", ""),
-            shift_start=config.get("shift_start", "07:00"),
+            shift_start=shift_start,
             shift_end=config.get("shift_end", "12:00"),
             crews=int(config.get("crews", 1)),
             site_ids=config.get("site_ids", []),
             sites=sites,
             heat_grid=heat_grid,
-            forecast_temp_c=None,
+            forecast_temp_c=forecast_temp_c,
         )
         total_exposure = sum(a["exposure_score"] for a in assignments)
         # finish_time: last assignment end time, or shift_end if no assignments

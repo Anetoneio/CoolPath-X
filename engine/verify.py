@@ -123,12 +123,14 @@ def run_child():
         assignments = data.get("assignments")
         if not isinstance(assignments, list) or not assignments:
             return False, "assignments empty or missing"
+        if len(assignments) < len(payload["site_ids"]):
+            return False, f"expected {len(payload['site_ids'])} assignments for fitting sites with 2 crews, got {len(assignments)}"
         for a in assignments:
             if not a.get("reason"):
                 return False, f"assignment {a.get('site_id')} missing reason"
             if "rest_breaks" not in a:
                 return False, f"assignment {a.get('site_id')} missing rest_breaks key"
-        return True, f"{len(assignments)} assignments compliant"
+        return True, f"all {len(assignments)} fitting sites assigned across 2 crews (reason & rest_breaks verified)"
 
     checks.append(run_check("POST /schedule returns 200 with assignments (reason & rest_breaks)", check_schedule))
 
