@@ -22,3 +22,7 @@ data/raw/
 
 # OS
 .DS_Store
+
+cache/
+.venv/
+__pycache__/
