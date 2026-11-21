@@ -22,6 +22,22 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          72.569449,
+          23.011213
+        ]
+      },
+      "properties": {
+        "id": "osm-node-627510870",
+        "type": "water",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           72.541694,
           23.02253
         ]
@@ -118,6 +134,22 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          72.600946,
+          23.049114
+        ]
+      },
+      "properties": {
+        "id": "osm-node-4625635508",
+        "type": "water",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           72.62803,
           22.983143
         ]
@@ -166,6 +198,54 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          72.555522,
+          23.020037
+        ]
+      },
+      "properties": {
+        "id": "osm-node-8960418389",
+        "type": "water",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.560754,
+          23.027784
+        ]
+      },
+      "properties": {
+        "id": "osm-node-9368552462",
+        "type": "water",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.556427,
+          23.020839
+        ]
+      },
+      "properties": {
+        "id": "osm-node-9963484601",
+        "type": "water",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           72.612305,
           22.981817
         ]
@@ -173,6 +253,22 @@
       "properties": {
         "id": "osm-node-10310283832",
         "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.578558,
+          23.021685
+        ]
+      },
+      "properties": {
+        "id": "osm-node-12092227895",
+        "type": "water",
         "verified": false,
         "source": "OpenStreetMap"
       }
@@ -236,6 +332,22 @@
       },
       "properties": {
         "id": "osm-node-14067711781",
+        "type": "water",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.58732,
+          23.024106
+        ]
+      },
+      "properties": {
+        "id": "osm-node-14067832715",
         "type": "water",
         "verified": false,
         "source": "OpenStreetMap"
@@ -1469,6 +1581,22 @@
       "properties": {
         "id": "osm-way-1394973197",
         "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.61458,
+          23.05682
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1394992784",
+        "type": "water",
         "verified": false,
         "source": "OpenStreetMap"
       }
