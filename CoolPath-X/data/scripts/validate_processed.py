@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import sys
 import jsonschema
+import networkx as nx
 import osmnx as ox
 
 
@@ -14,7 +15,7 @@ def main():
     data_dir = project_root / "data" / "processed"
     contracts_dir = project_root / "contracts"
 
-    print("=== TASK D: VALIDATING PROCESSED DATASETS ===")
+    print("=== TASK 4: FULL VALIDATION OF PROCESSED DATASETS ===")
 
     # 1. Validate heat_grid.geojson
     heat_grid_path = data_dir / "heat_grid.geojson"
@@ -72,6 +73,22 @@ def main():
     n_edges = G.number_of_edges()
     print(f"   Graph node count: {n_nodes}")
     print(f"   Graph edge count: {n_edges}")
+
+    wccs = list(nx.weakly_connected_components(G))
+    largest_wcc_len = len(max(wccs, key=len))
+    wcc_pct = (largest_wcc_len / n_nodes) * 100.0
+    print(f"   Largest component size: {largest_wcc_len} nodes ({wcc_pct:.2f}%)")
+
+    # 4. File sizes in data/processed
+    print("\n4. Summary of file sizes in data/processed/:")
+    for f in sorted(data_dir.iterdir()):
+        if f.is_file():
+            size_kb = f.stat().st_size / 1024
+            size_mb = size_kb / 1024
+            if size_mb >= 1.0:
+                print(f"   - {f.name:<25}: {size_mb:.2f} MB ({f.stat().st_size} bytes)")
+            else:
+                print(f"   - {f.name:<25}: {size_kb:.2f} KB ({f.stat().st_size} bytes)")
 
     print("\n=== VALIDATION COMPLETE: ALL DATASETS VALID ===")
 
