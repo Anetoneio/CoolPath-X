@@ -1,6 +1,7 @@
 ﻿import { useState, useEffect } from 'react';
 import MapView from './components/map/MapView';
 import SiteSelector from './components/site/SiteSelector';
+import SchedulePanel from './components/schedule/SchedulePanel';
 import {
   getSites,
   getFacilities,
@@ -15,7 +16,6 @@ export default function App() {
   const [heatGrid, setHeatGrid] = useState(null);
   const [heatVisible, setHeatVisible] = useState(false);
   const [routes, setRoutes] = useState([]);
-  const [selectedSites, setSelectedSites] = useState([]);
   const [schedule, setSchedule] = useState(null);
   const [error, setError] = useState(null);
 
@@ -85,6 +85,7 @@ export default function App() {
         </div>
         <div className="h-full overflow-y-auto p-4 space-y-4">
           <SiteSelector sites={sites} onSchedule={handleSchedule} />
+          <SchedulePanel schedule={schedule} sites={sites} />
           <Panel title="Route Comparison" />
           <Panel title="Data Confidence" />
         </div>
