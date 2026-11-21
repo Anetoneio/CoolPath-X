@@ -6,12 +6,17 @@ DATA_MODE (env var, default "mock") controls data source:
 
 Every endpoint matches its contract in contracts/api.md. All exposure
 values are ESTIMATES and carry a plain-language reason string.
+
+NUMERIC PLACEHOLDERS (pending A1 verification).
 """
 import json
 from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+
+SUMMARY_EXPOSURE_DIFF_RATIO = 0.8  # PLACEHOLDER - pending A1 verification
+SUMMARY_EXPOSURE_DIFF_PCT = 20   # PLACEHOLDER - pending A1 verification
 
 from data_access import load_json, load_response
 from forecast import load_forecast
@@ -192,9 +197,9 @@ def post_simulate(payload: dict):
     a = simulate_one(config_a)
     b = simulate_one(config_b)
     summary = (
-        f"Earlier start reduces estimated exposure by 25%"
-        if a["total_exposure"] > b["total_exposure"] * 0.8
-        else f"Exposure difference within 20%"
+        f"Earlier start reduces estimated exposure by {SUMMARY_EXPOSURE_DIFF_PCT}%"
+        if a["total_exposure"] > b["total_exposure"] * SUMMARY_EXPOSURE_DIFF_RATIO
+        else f"Exposure difference within {SUMMARY_EXPOSURE_DIFF_PCT}%"
     )
     return JSONResponse(content={"a": a, "b": b, "summary": summary})
 
