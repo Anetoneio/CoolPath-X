@@ -1,0 +1,26 @@
+{
+  "routes": [
+    {
+      "id": "R01",
+      "label": "Shaded route via F01",
+      "geometry": { "type": "LineString", "coordinates": [
+        [72.5571, 23.0297], [72.5642, 23.0261], [72.5714, 23.0225]
+      ]},
+      "distance_km": 1.4,
+      "duration_min": 9,
+      "exposure_score": 45,
+      "water_points_nearby": ["F01"]
+    },
+    {
+      "id": "R02",
+      "label": "Direct route",
+      "geometry": { "type": "LineString", "coordinates": [
+        [72.5571, 23.0297], [72.5642, 23.0261], [72.5714, 23.0225]
+      ]},
+      "distance_km": 1.2,
+      "duration_min": 7,
+      "exposure_score": 68,
+      "water_points_nearby": []
+    }
+  ]
+}

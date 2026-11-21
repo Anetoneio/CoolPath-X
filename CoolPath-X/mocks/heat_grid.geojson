@@ -1,0 +1,125 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    { "type": "Feature",
+      "geometry": { "type": "Polygon", "coordinates": [[
+        [72.5600, 23.0120], [72.5700, 23.0120], [72.5700, 23.0220], [72.5600, 23.0220], [72.5600, 23.0120]
+      ]]},
+      "properties": { "cell_id": "C01", "lst_c": 45.1, "ndvi": 0.08, "heat_index_0_100": 84,
+        "acquired_on": "2026-05-20", "source": "Landsat-9", "cloud_pct": 4 } },
+    { "type": "Feature",
+      "geometry": { "type": "Polygon", "coordinates": [[
+        [72.5700, 23.0120], [72.5800, 23.0120], [72.5800, 23.0220], [72.5700, 23.0220], [72.5700, 23.0120]
+      ]]},
+      "properties": { "cell_id": "C02", "lst_c": 44.3, "ndvi": 0.10, "heat_index_0_100": 80,
+        "acquired_on": "2026-05-20", "source": "Landsat-9", "cloud_pct": 6 } },
+    { "type": "Feature",
+      "geometry": { "type": "Polygon", "coordinates": [[
+        [72.5600, 23.0220], [72.5700, 23.0220], [72.5700, 23.0320], [72.5600, 23.0320], [72.5600, 23.0220]
+      ]]},
+      "properties": { "cell_id": "C03", "lst_c": 43.0, "ndvi": 0.18, "heat_index_0_100": 72,
+        "acquired_on": "2026-05-20", "source": "Landsat-9", "cloud_pct": 5 } },
+    { "type": "Feature",
+      "geometry": { "type": "Polygon", "coordinates": [[
+        [72.5700, 23.0220], [72.5800, 23.0220], [72.5800, 23.0320], [72.5700, 23.0320], [72.5700, 23.0220]
+      ]]},
+      "properties": { "cell_id": "C04", "lst_c": 43.8, "ndvi": 0.14, "heat_index_0_100": 76,
+        "acquired_on": "2026-05-20", "source": "Landsat-9", "cloud_pct": 7 } },
+    { "type": "Feature",
+      "geometry": { "type": "Polygon", "coordinates": [[
+        [72.5500, 23.0320], [72.5600, 23.0320], [72.5600, 23.0420], [72.5500, 23.0420], [72.5500, 23.0320]
+      ]]},
+      "properties": { "cell_id": "C05", "lst_c": 42.2, "ndvi": 0.22, "heat_index_0_100": 66,
+        "acquired_on": "2026-05-20", "source": "Landsat-9", "cloud_pct": 3 } },
+    { "type": "Feature",
+      "geometry": { "type": "Polygon", "coordinates": [[
+        [72.5600, 23.0320], [72.5700, 23.0320], [72.5700, 23.0420], [72.5600, 23.0420], [72.5600, 23.0320]
+      ]]},
+      "properties": { "cell_id": "C06", "lst_c": 43.1, "ndvi": 0.20, "heat_index_0_100": 70,
+        "acquired_on": "2026-05-20", "source": "Landsat-9", "cloud_pct": 5 } },
+    { "type": "Feature",
+      "geometry": { "type": "Polygon", "coordinates": [[
+        [72.5700, 23.0320], [72.5800, 23.0320], [72.5800, 23.0420], [72.5700, 23.0420], [72.5700, 23.0320]
+      ]]},
+      "properties": { "cell_id": "C07", "lst_c": 44.0, "ndvi": 0.11, "heat_index_0_100": 78,
+        "acquired_on": "2026-05-20", "source": "Landsat-9", "cloud_pct": 6 } },
+    { "type": "Feature",
+      "geometry": { "type": "Polygon", "coordinates": [[
+        [72.5800, 23.0320], [72.5900, 23.0320], [72.5900, 23.0420], [72.5800, 23.0420], [72.5800, 23.0320]
+      ]]},
+      "properties": { "cell_id": "C08", "lst_c": 44.7, "ndvi": 0.09, "heat_index_0_100": 82,
+        "acquired_on": "2026-05-20", "source": "Landsat-9", "cloud_pct": 8 } },
+    { "type": "Feature",
+      "geometry": { "type": "Polygon", "coordinates": [[
+        [72.5400, 23.0420], [72.5500, 23.0420], [72.5500, 23.0520], [72.5400, 23.0520], [72.5400, 23.0420]
+      ]]},
+      "properties": { "cell_id": "C09", "lst_c": 41.5, "ndvi": 0.25, "heat_index_0_100": 62,
+        "acquired_on": "2026-05-20", "source": "Landsat-9", "cloud_pct": 2 } },
+    { "type": "Feature",
+      "geometry": { "type": "Polygon", "coordinates": [[
+        [72.5500, 23.0420], [72.5600, 23.0420], [72.5600, 23.0520], [72.5500, 23.0520], [72.5500, 23.0420]
+      ]]},
+      "properties": { "cell_id": "C10", "lst_c": 42.8, "ndvi": 0.19, "heat_index_0_100": 69,
+        "acquired_on": "2026-05-20", "source": "Landsat-9", "cloud_pct": 4 } },
+    { "type": "Feature",
+      "geometry": { "type": "Polygon", "coordinates": [[
+        [72.5600, 23.0420], [72.5700, 23.0420], [72.5700, 23.0520], [72.5600, 23.0520], [72.5600, 23.0420]
+      ]]},
+      "properties": { "cell_id": "C11", "lst_c": 43.5, "ndvi": 0.15, "heat_index_0_100": 74,
+        "acquired_on": "2026-05-20", "source": "Landsat-9", "cloud_pct": 5 } },
+    { "type": "Feature",
+      "geometry": { "type": "Polygon", "coordinates": [[
+        [72.5700, 23.0420], [72.5800, 23.0420], [72.5800, 23.0520], [72.5700, 23.0520], [72.5700, 23.0420]
+      ]]},
+      "properties": { "cell_id": "C12", "lst_c": 44.2, "ndvi": 0.12, "heat_index_0_100": 79,
+        "acquired_on": "2026-05-20", "source": "Landsat-9", "cloud_pct": 6 } },
+    { "type": "Feature",
+      "geometry": { "type": "Polygon", "coordinates": [[
+        [72.5800, 23.0420], [72.5900, 23.0420], [72.5900, 23.0520], [72.5800, 23.0520], [72.5800, 23.0420]
+      ]]},
+      "properties": { "cell_id": "C13", "lst_c": 44.9, "ndvi": 0.07, "heat_index_0_100": 85,
+        "acquired_on": "2026-05-20", "source": "Landsat-9", "cloud_pct": 9 } },
+    { "type": "Feature",
+      "geometry": { "type": "Polygon", "coordinates": [[
+        [72.5400, 23.0520], [72.5500, 23.0520], [72.5500, 23.0620], [72.5400, 23.0620], [72.5400, 23.0520]
+      ]]},
+      "properties": { "cell_id": "C14", "lst_c": 41.8, "ndvi": 0.23, "heat_index_0_100": 64,
+        "acquired_on": "2026-05-20", "source": "Landsat-9", "cloud_pct": 3 } },
+    { "type": "Feature",
+      "geometry": { "type": "Polygon", "coordinates": [[
+        [72.5500, 23.0520], [72.5600, 23.0520], [72.5600, 23.0620], [72.5500, 23.0620], [72.5500, 23.0520]
+      ]]},
+      "properties": { "cell_id": "C15", "lst_c": 42.6, "ndvi": 0.20, "heat_index_0_100": 68,
+        "acquired_on": "2026-05-20", "source": "Landsat-9", "cloud_pct": 4 } },
+    { "type": "Feature",
+      "geometry": { "type": "Polygon", "coordinates": [[
+        [72.5600, 23.0520], [72.5700, 23.0520], [72.5700, 23.0620], [72.5600, 23.0620], [72.5600, 23.0520]
+      ]]},
+      "properties": { "cell_id": "C16", "lst_c": 43.3, "ndvi": 0.16, "heat_index_0_100": 73,
+        "acquired_on": "2026-05-20", "source": "Landsat-9", "cloud_pct": 5 } },
+    { "type": "Feature",
+      "geometry": { "type": "Polygon", "coordinates": [[
+        [72.5700, 23.0520], [72.5800, 23.0520], [72.5800, 23.0620], [72.5700, 23.0620], [72.5700, 23.0520]
+      ]]},
+      "properties": { "cell_id": "C17", "lst_c": 44.1, "ndvi": 0.13, "heat_index_0_100": 77,
+        "acquired_on": "2026-05-20", "source": "Landsat-9", "cloud_pct": 6 } },
+    { "type": "Feature",
+      "geometry": { "type": "Polygon", "coordinates": [[
+        [72.5800, 23.0520], [72.5900, 23.0520], [72.5900, 23.0620], [72.5800, 23.0620], [72.5800, 23.0520]
+      ]]},
+      "properties": { "cell_id": "C18", "lst_c": 44.6, "ndvi": 0.10, "heat_index_0_100": 81,
+        "acquired_on": "2026-05-20", "source": "Landsat-9", "cloud_pct": 7 } },
+    { "type": "Feature",
+      "geometry": { "type": "Polygon", "coordinates": [[
+        [72.6000, 22.9850], [72.6100, 22.9850], [72.6100, 22.9950], [72.6000, 22.9950], [72.6000, 22.9850]
+      ]]},
+      "properties": { "cell_id": "C19", "lst_c": 45.5, "ndvi": 0.05, "heat_index_0_100": 88,
+        "acquired_on": "2026-05-20", "source": "Landsat-9", "cloud_pct": 10 } },
+    { "type": "Feature",
+      "geometry": { "type": "Polygon", "coordinates": [[
+        [72.6100, 22.9850], [72.6200, 22.9850], [72.6200, 22.9950], [72.6100, 22.9950], [72.6100, 22.9850]
+      ]]},
+      "properties": { "cell_id": "C20", "lst_c": 45.0, "ndvi": 0.06, "heat_index_0_100": 86,
+        "acquired_on": "2026-05-20", "source": "Landsat-9", "cloud_pct": 8 } }
+  ]
+}

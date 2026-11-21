@@ -1,0 +1,11 @@
+{
+  "overall_0_100": 72,
+  "components": {
+    "data_age": 80,
+    "cloud": 90,
+    "resolution": 60,
+    "forecast_age": 70,
+    "source_agreement": 65
+  },
+  "notes": [ "Heat grid from 2026-05-20 Landsat-9 pass; cloud cover < 10%", "Facility verification status mixed; unverified points excluded from routing" ]
+}

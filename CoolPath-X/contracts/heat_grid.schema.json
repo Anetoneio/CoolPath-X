@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "heat_grid.geojson",
+  "description": "FeatureCollection of polygon heat cells for Ahmedabad.",
+  "type": "object",
+  "required": ["type", "features"],
+  "properties": {
+    "type": { "const": "FeatureCollection" },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "properties", "geometry"],
+        "properties": {
+          "type": { "const": "Feature" },
+          "geometry": {
+            "type": "object",
+            "required": ["type", "coordinates"],
+            "properties": {
+              "type": { "const": "Polygon" },
+              "coordinates": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": { "type": "number" },
+                    "minItems": 2,
+                    "maxItems": 2
+                  }
+                }
+              }
+            }
+          },
+          "properties": {
+            "type": "object",
+            "required": [
+              "cell_id", "lst_c", "ndvi", "heat_index_0_100",
+              "acquired_on", "source", "cloud_pct"
+            ],
+            "properties": {
+              "cell_id": { "type": "string" },
+              "lst_c": { "type": "number" },
+              "ndvi": { "type": "number" },
+              "heat_index_0_100": { "type": "number", "minimum": 0, "maximum": 100 },
+              "acquired_on": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+              "source": { "type": "string" },
+              "cloud_pct": { "type": "number", "minimum": 0, "maximum": 100 }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

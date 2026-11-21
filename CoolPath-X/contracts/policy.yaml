@@ -1,0 +1,28 @@
+# WBGT heat policy for Ahmedabad municipal outdoor workers.
+# Thresholds are placeholders pending A1 verification — do not invent values.
+
+wbgt_bands:
+  - band: "low"
+    wbgt_c_max: TODO_VERIFY
+  - band: "moderate"
+    wbgt_c_min: TODO_VERIFY
+    wbgt_c_max: TODO_VERIFY
+  - band: "high"
+    wbgt_c_min: TODO_VERIFY
+    wbgt_c_max: TODO_VERIFY
+  - band: "extreme"
+    wbgt_c_min: TODO_VERIFY
+
+intensity_limits:
+  light:
+    max_continuous_work_min: TODO_VERIFY
+    rest_min: TODO_VERIFY
+    source_citation: TODO
+  moderate:
+    max_continuous_work_min: TODO_VERIFY
+    rest_min: TODO_VERIFY
+    source_citation: TODO
+  heavy:
+    max_continuous_work_min: TODO_VERIFY
+    rest_min: TODO_VERIFY
+    source_citation: TODO

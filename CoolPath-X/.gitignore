@@ -1,0 +1,24 @@
+# Git backup
+.git_backup/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+.env
+.venv/
+venv/
+.env.local
+engine/cache/
+
+# Node
+node_modules/
+dist/
+build/
+*.local
+
+# Data
+data/raw/
+
+# OS
+.DS_Store
