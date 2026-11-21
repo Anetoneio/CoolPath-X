@@ -1,53 +1,42 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
+import MapView from './components/map/MapView';
 import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  GeoJSON,
-} from 'react-leaflet';
-import { API_BASE_URL, api } from './config';
-
-// Colour ramp for heat_index_0_100 (exposure values are estimates).
-function heatColor(index) {
-  if (index >= 80) return '#7f0000';
-  if (index >= 70) return '#ff4d4d';
-  if (index >= 60) return '#ffa64d';
-  if (index >= 50) return '#ffe066';
-  return '#d9f2a6';
-}
-
-function style(feature) {
-  const index = feature.properties?.heat_index_0_100 ?? 50;
-  return {
-    color: heatColor(index),
-    weight: 1,
-    fillColor: heatColor(index),
-    fillOpacity: 0.5,
-  };
-}
+  getSites,
+  getFacilities,
+  getHeatGrid,
+} from './config';
 
 const CENTER = [23.0225, 72.5714]; // Ahmedabad city centre
 
 export default function App() {
   const [sites, setSites] = useState([]);
+  const [facilities, setFacilities] = useState(null);
   const [heatGrid, setHeatGrid] = useState(null);
   const [heatVisible, setHeatVisible] = useState(false);
+  const [routes, setRoutes] = useState([]);
+  const [selectedSites, setSelectedSites] = useState([]);
+  const [schedule, setSchedule] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
-        const [sitesRes, gridRes] = await Promise.all([
-          fetch(api('/sites')),
-          fetch(api('/heat-grid')),
+        const [sitesData, facilitiesData, heatGridData] = await Promise.all([
+          getSites(),
+          getFacilities(),
+          getHeatGrid(),
         ]);
         if (!cancelled) {
-          setSites(await sitesRes.json());
-          setHeatGrid(await gridRes.json());
+          setSites(sitesData);
+          setFacilities(facilitiesData);
+          setHeatGrid(heatGridData);
         }
       } catch (err) {
-        console.warn('Failed to load map data from engine:', err);
+        if (!cancelled) {
+          console.warn('Failed to load map data from engine:', err);
+          setError(err.message);
+        }
       }
     })();
     return () => { cancelled = true; };
@@ -57,30 +46,13 @@ export default function App() {
     <div className="flex h-screen text-slate-900">
       {/* Map panel */}
       <div className="flex-1 relative">
-        <MapContainer center={CENTER} zoom={12} className="absolute inset-0">
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; OpenStreetMap contributors'
-          />
-          {heatVisible && heatGrid && (
-            <GeoJSON data={heatGrid} style={style} />
-          )}
-          {sites.map((site) => (
-            <Marker
-              key={site.site_id}
-              position={[site.lat, site.lon]}
-            >
-              <Popup>
-                <div className="p-1">
-                  <div className="font-bold">{site.name}</div>
-                  <div className="text-xs text-slate-600">
-                    {site.job_type} &middot; intensity: {site.intensity}
-                  </div>
-                </div>
-              </Popup>
-            </Marker>
-          ))}
-        </MapContainer>
+        <MapView
+          sites={sites}
+          facilities={facilities}
+          heatGrid={heatGrid}
+          heatVisible={heatVisible}
+          routes={routes}
+        />
 
         {/* Heat-layer toggle */}
         <div className="absolute top-4 left-4 z-20 flex items-center gap-2 bg-white/90 backdrop-blur px-3 py-2 rounded-lg shadow border">
@@ -92,6 +64,12 @@ export default function App() {
           />
           <label className="text-sm font-medium">Heat layer (estimate)</label>
         </div>
+
+        {error && (
+          <div className="absolute bottom-4 left-4 z-20 p-3 rounded bg-red-50 border border-red-200 text-red-800 text-sm">
+            {error}
+          </div>
+        )}
       </div>
 
       {/* Sidebar */}
