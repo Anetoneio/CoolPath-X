@@ -5,8 +5,7 @@ Queries Overpass for:
 Water points (mapped to type "water"):
 - amenity=drinking_water
 - man_made=water_tap
-- amenity=fountain
-(Filtered based on check_water.py diagnosis; tags returning 0 are omitted).
+(Decorative fountains are excluded as they are not drinking water).
 
 Shade points (mapped to type "shade"):
 - amenity=shelter
@@ -40,12 +39,11 @@ ENDPOINTS = [
 
 USER_AGENT = "CoolPath/1.0 (Ahmedabad Urban Heat Project; contact: data@coolpath.local)"
 
-# Query includes active water tags and shade tags
+# Query includes active drinking water tags and shade tags (fountains excluded)
 OVERPASS_QUERY = f"""[out:json][timeout:60];
 (
   nwr["amenity"="drinking_water"]({BBOX_SOUTH},{BBOX_WEST},{BBOX_NORTH},{BBOX_EAST});
   nwr["man_made"="water_tap"]({BBOX_SOUTH},{BBOX_WEST},{BBOX_NORTH},{BBOX_EAST});
-  nwr["amenity"="fountain"]({BBOX_SOUTH},{BBOX_WEST},{BBOX_NORTH},{BBOX_EAST});
   nwr["amenity"="shelter"]({BBOX_SOUTH},{BBOX_WEST},{BBOX_NORTH},{BBOX_EAST});
   nwr["leisure"="park"]({BBOX_SOUTH},{BBOX_WEST},{BBOX_NORTH},{BBOX_EAST});
   nwr["highway"="bus_stop"]["shelter"="yes"]({BBOX_SOUTH},{BBOX_WEST},{BBOX_NORTH},{BBOX_EAST});
@@ -133,9 +131,9 @@ def process_overpass_data(data: dict) -> dict:
         drinking_water = tags.get("drinking_water", "")
 
         # Type mapping:
-        # Drinking water indicators -> water
+        # Drinking water indicators (drinking_water, water_tap, drinking_water=yes) -> water
         # All others (shelters, parks, covered bus stops) -> shade
-        if amenity in ("drinking_water", "fountain") or man_made == "water_tap" or drinking_water == "yes":
+        if amenity == "drinking_water" or man_made == "water_tap" or drinking_water == "yes":
             fac_type = "water"
         else:
             fac_type = "shade"

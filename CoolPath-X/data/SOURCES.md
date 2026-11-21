@@ -27,18 +27,21 @@
   - Diagnosed candidate water tags using `data/scripts/check_water.py`:
     - `amenity=drinking_water`: 1 element
     - `man_made=water_tap`: 1 element
-    - `amenity=fountain`: 7 elements
+    - `amenity=fountain`: 7 elements (excluded from the dataset as decorative fountains are not drinking water)
     - `amenity=water_point`, `drinking_water=yes`, `amenity=water_well`: 0 elements (omitted from query)
-  - Queried Overpass API within the Ahmedabad AOI bbox (`[south: 22.97, west: 72.53, north: 23.08, east: 72.64]`) for active water tags plus shade elements:
+  - Queried Overpass API within the Ahmedabad AOI bbox (`[south: 22.97, west: 72.53, north: 23.08, east: 72.64]`) for active drinking water tags plus shade elements:
+    - `amenity=drinking_water`
+    - `man_made=water_tap`
     - `amenity=shelter`
     - `leisure=park`
     - `highway=bus_stop` with `shelter=yes`
   - Used `out center;` to obtain point center coordinates for ways/relations in addition to nodes.
   - Category Mapping (`contracts/facilities.schema.json`):
-    - `amenity=drinking_water`, `man_made=water_tap`, `amenity=fountain` -> `type: "water"` (9 features total).
+    - `amenity=drinking_water`, `man_made=water_tap` -> `type: "water"` (2 features total).
     - `amenity=shelter`, `leisure=park`, covered bus stops -> `type: "shade"` (95 features total).
-  - Marked `verified: false` on all 104 points (none have been field-verified by team members).
-  - Assigned deterministic IDs prefixed with OSM element type (e.g. `osm-node-14067711781`, `osm-way-4210649810`).
+  - Marked `verified: false` on all 97 points (none have been field-verified by team members).
+  - Assigned deterministic IDs prefixed with OSM element type (e.g. `osm-node-14067711781`, `osm-node-11883838421`, `osm-way-4210649810`).
+  - **Water Coverage**: Only about 2 mapped drinking-water points exist in OSM for this AOI (1 drinking water point and 1 water tap). Coverage is genuinely sparse in OpenStreetMap for Ahmedabad; no synthetic points were invented.
   - **Important Caveat on Shade Points**: "Shade" points in this dataset are predominantly park centroids (one single coordinate per park polygon). Consequently, mapped shade coverage appears denser than actual continuous shaded pedestrian walkway space; downstream routing and map display should not treat a park centroid as a precise, localized shaded shelter spot.
   - **Manual Water Points**: `data/manual/water_points.csv` was not present in the workspace, so no manual user-supplied points were merged; 100% of facility features originate from OSM.
 
