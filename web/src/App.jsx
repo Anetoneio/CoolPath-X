@@ -1,5 +1,6 @@
 ﻿import { useState, useEffect } from 'react';
 import MapView from './components/map/MapView';
+import SiteSelector from './components/site/SiteSelector';
 import {
   getSites,
   getFacilities,
@@ -42,6 +43,10 @@ export default function App() {
     return () => { cancelled = true; };
   }, []);
 
+  const handleSchedule = (result) => {
+    setSchedule(result);
+  };
+
   return (
     <div className="flex h-screen text-slate-900">
       {/* Map panel */}
@@ -79,7 +84,7 @@ export default function App() {
           <p className="text-sm text-slate-500">Ahmedabad · heat-aware scheduling</p>
         </div>
         <div className="h-full overflow-y-auto p-4 space-y-4">
-          <Panel title="Schedule" />
+          <SiteSelector sites={sites} onSchedule={handleSchedule} />
           <Panel title="Route Comparison" />
           <Panel title="Data Confidence" />
         </div>
