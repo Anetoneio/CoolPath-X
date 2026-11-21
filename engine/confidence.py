@@ -13,6 +13,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
+from config import DATA_MODE
 from data_access import load_json
 from forecast import load_forecast
 
@@ -185,8 +186,11 @@ def confidence(heat_grid_source: str, forecast_source: str) -> dict:
     elif forecast_source == "cache":
         notes.append("Forecast served from local cache (engine/cache/forecast.json).")
     # Report the ACTUAL source used (falls back to mocks when real data missing).
-    if heat_grid_source == "mock":
-        notes.append("DATA_MODE=real requested but data/processed/ missing; serving mocks (source labeled 'mock').")
+    if DATA_MODE == "real":
+        if heat_grid_source == "mock":
+            notes.append("DATA_MODE=real requested but data/processed/ missing; serving mocks (source labeled 'mock').")
+        else:
+            notes.append("DATA_MODE=real: serving A1 processed pipeline data.")
     else:
         notes.append("DATA_MODE=mock: all values are estimates from static mocks.")
 

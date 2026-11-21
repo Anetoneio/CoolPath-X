@@ -35,9 +35,6 @@ from forecast import load_forecast
 from scheduler import schedule as compute_schedule, _time_to_minutes, _add_minutes
 from routing import compare_routes
 from confidence import confidence
-from scheduler import schedule as compute_schedule
-from routing import compare_routes
-from confidence import confidence
 
 APP_DIR = Path(__file__).resolve().parent
 
