@@ -2,6 +2,7 @@
 import MapView from './components/map/MapView';
 import SiteSelector from './components/site/SiteSelector';
 import SchedulePanel from './components/schedule/SchedulePanel';
+import RoutePanel from './components/route/RoutePanel';
 import {
   getSites,
   getFacilities,
@@ -47,6 +48,10 @@ export default function App() {
     setSchedule(result);
   };
 
+  const handleRoutes = (routeList) => {
+    setRoutes(routeList);
+  };
+
   return (
     <div className="flex h-screen text-slate-900">
       {/* Map panel */}
@@ -86,7 +91,7 @@ export default function App() {
         <div className="h-full overflow-y-auto p-4 space-y-4">
           <SiteSelector sites={sites} onSchedule={handleSchedule} />
           <SchedulePanel schedule={schedule} sites={sites} />
-          <Panel title="Route Comparison" />
+          <RoutePanel sites={sites} facilities={facilities} onRoutes={handleRoutes} />
           <Panel title="Data Confidence" />
         </div>
       </aside>
