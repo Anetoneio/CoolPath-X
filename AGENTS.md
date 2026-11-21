@@ -15,6 +15,17 @@
 - Every score shown to users must carry a plain-language `reason` string.
 - Exposure values are estimates. Label them as such in code comments and UI text.
 - No secrets or API keys in the repo.
+
+## Where to start
+
+Each seat begins with its task prompt and the resume template:
+
+- **A1 (data):** read `docs/prompts/A1-data.md`, then `docs/prompts/RESUME.md` with `<SEAT>` = A1.
+- **A2 (engine):** read `docs/prompts/A2-engine.md`, then `docs/prompts/RESUME.md` with `<SEAT>` = A2.
+- **B1 (dashboard):** read `docs/prompts/B1-dashboard.md`, then `docs/prompts/RESUME.md` with `<SEAT>` = B1.
+- **B2 (orchestrator):** read `docs/prompts/B2-orchestrator.md`, then `docs/prompts/RESUME.md` with `<SEAT>` = B2.
+
+All prompts list `.clinerules` first in their read-first list. The root `README.md` and `AGENTS.md` remain the entry points for running the project and understanding ownership.
 - Commit small and often. Ask before installing any new dependency.
 - Before finishing any task, list which files you changed and which contract you verified against.
 

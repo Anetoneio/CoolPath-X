@@ -6,12 +6,16 @@ __pycache__/
 .venv/
 venv/
 .env.local
+engine/cache/
 
 # Node
 node_modules/
 dist/
 build/
 *.local
+
+# Data
+data/raw/
 
 # OS
 .DS_Store
