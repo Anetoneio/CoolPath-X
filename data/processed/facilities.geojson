@@ -1,0 +1,1557 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.588419,
+          23.05632
+        ]
+      },
+      "properties": {
+        "id": "osm-node-611573336",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.541694,
+          23.02253
+        ]
+      },
+      "properties": {
+        "id": "osm-node-2265925490",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.544049,
+          23.01831
+        ]
+      },
+      "properties": {
+        "id": "osm-node-2265926056",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.605099,
+          22.995137
+        ]
+      },
+      "properties": {
+        "id": "osm-node-2265953642",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.586041,
+          23.019791
+        ]
+      },
+      "properties": {
+        "id": "osm-node-3306683481",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.550513,
+          23.011463
+        ]
+      },
+      "properties": {
+        "id": "osm-node-3808256133",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.575684,
+          23.067673
+        ]
+      },
+      "properties": {
+        "id": "osm-node-4210649810",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.62803,
+          22.983143
+        ]
+      },
+      "properties": {
+        "id": "osm-node-4636987361",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.593704,
+          23.022459
+        ]
+      },
+      "properties": {
+        "id": "osm-node-7088275199",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.582275,
+          23.024236
+        ]
+      },
+      "properties": {
+        "id": "osm-node-7311053166",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.612305,
+          22.981817
+        ]
+      },
+      "properties": {
+        "id": "osm-node-10310283832",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.638438,
+          23.020553
+        ]
+      },
+      "properties": {
+        "id": "osm-node-13324639919",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.560597,
+          23.020684
+        ]
+      },
+      "properties": {
+        "id": "osm-node-14065592772",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.586231,
+          23.019641
+        ]
+      },
+      "properties": {
+        "id": "osm-node-14067660536",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.587024,
+          23.023526
+        ]
+      },
+      "properties": {
+        "id": "osm-node-14067711781",
+        "type": "water",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.58732,
+          23.024106
+        ]
+      },
+      "properties": {
+        "id": "osm-node-14067832715",
+        "type": "water",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.528905,
+          23.038502
+        ]
+      },
+      "properties": {
+        "id": "osm-way-172152761",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.560956,
+          23.026449
+        ]
+      },
+      "properties": {
+        "id": "osm-way-172153337",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.547344,
+          23.044978
+        ]
+      },
+      "properties": {
+        "id": "osm-way-172153457",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.601228,
+          23.005314
+        ]
+      },
+      "properties": {
+        "id": "osm-way-172640658",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.582554,
+          23.061488
+        ]
+      },
+      "properties": {
+        "id": "osm-way-229082078",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.558978,
+          23.0796
+        ]
+      },
+      "properties": {
+        "id": "osm-way-294809276",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.55613,
+          23.020428
+        ]
+      },
+      "properties": {
+        "id": "osm-way-312551684",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.579064,
+          23.021148
+        ]
+      },
+      "properties": {
+        "id": "osm-way-314446428",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.559329,
+          23.022407
+        ]
+      },
+      "properties": {
+        "id": "osm-way-317476729",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.554556,
+          23.00021
+        ]
+      },
+      "properties": {
+        "id": "osm-way-317787177",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.598318,
+          23.054431
+        ]
+      },
+      "properties": {
+        "id": "osm-way-322227184",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.57968,
+          23.042646
+        ]
+      },
+      "properties": {
+        "id": "osm-way-326490209",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.606759,
+          22.992145
+        ]
+      },
+      "properties": {
+        "id": "osm-way-326736137",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.57915,
+          23.026452
+        ]
+      },
+      "properties": {
+        "id": "osm-way-326849509",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.551598,
+          23.012531
+        ]
+      },
+      "properties": {
+        "id": "osm-way-330926672",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.57755,
+          23.027334
+        ]
+      },
+      "properties": {
+        "id": "osm-way-333819585",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.537121,
+          23.047147
+        ]
+      },
+      "properties": {
+        "id": "osm-way-334470472",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.540804,
+          23.01931
+        ]
+      },
+      "properties": {
+        "id": "osm-way-334995867",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.549503,
+          23.025392
+        ]
+      },
+      "properties": {
+        "id": "osm-way-335743759",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.592111,
+          23.079052
+        ]
+      },
+      "properties": {
+        "id": "osm-way-343143992",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.560714,
+          23.034484
+        ]
+      },
+      "properties": {
+        "id": "osm-way-362762675",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.53088,
+          23.028097
+        ]
+      },
+      "properties": {
+        "id": "osm-way-366769533",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.529663,
+          23.034345
+        ]
+      },
+      "properties": {
+        "id": "osm-way-366811127",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.532487,
+          23.044584
+        ]
+      },
+      "properties": {
+        "id": "osm-way-367198369",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.545723,
+          23.003407
+        ]
+      },
+      "properties": {
+        "id": "osm-way-367427547",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.634837,
+          22.988104
+        ]
+      },
+      "properties": {
+        "id": "osm-way-367949942",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.596933,
+          23.006836
+        ]
+      },
+      "properties": {
+        "id": "osm-way-368911567",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.568555,
+          23.047493
+        ]
+      },
+      "properties": {
+        "id": "osm-way-381421363",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.539932,
+          23.043856
+        ]
+      },
+      "properties": {
+        "id": "osm-way-451817621",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.540237,
+          23.04317
+        ]
+      },
+      "properties": {
+        "id": "osm-way-451817622",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.540777,
+          23.043955
+        ]
+      },
+      "properties": {
+        "id": "osm-way-451817623",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.539145,
+          23.042337
+        ]
+      },
+      "properties": {
+        "id": "osm-way-451817625",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.576826,
+          23.068073
+        ]
+      },
+      "properties": {
+        "id": "osm-way-452061105",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.577179,
+          23.068262
+        ]
+      },
+      "properties": {
+        "id": "osm-way-452061106",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.567501,
+          23.078963
+        ]
+      },
+      "properties": {
+        "id": "osm-way-462146716",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.582225,
+          23.056431
+        ]
+      },
+      "properties": {
+        "id": "osm-way-463206266",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.60093,
+          23.048979
+        ]
+      },
+      "properties": {
+        "id": "osm-way-468008726",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.629391,
+          22.98452
+        ]
+      },
+      "properties": {
+        "id": "osm-way-469342324",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.539667,
+          23.006873
+        ]
+      },
+      "properties": {
+        "id": "osm-way-472446481",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.57367,
+          23.019215
+        ]
+      },
+      "properties": {
+        "id": "osm-way-526388325",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.598907,
+          23.008761
+        ]
+      },
+      "properties": {
+        "id": "osm-way-555775170",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.59794,
+          23.007646
+        ]
+      },
+      "properties": {
+        "id": "osm-way-555775527",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.605187,
+          23.00599
+        ]
+      },
+      "properties": {
+        "id": "osm-way-555776167",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.572427,
+          23.043268
+        ]
+      },
+      "properties": {
+        "id": "osm-way-555931904",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.555728,
+          23.056058
+        ]
+      },
+      "properties": {
+        "id": "osm-way-557551584",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.531827,
+          23.042843
+        ]
+      },
+      "properties": {
+        "id": "osm-way-557551890",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.572029,
+          23.072191
+        ]
+      },
+      "properties": {
+        "id": "osm-way-557555958",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.569207,
+          23.064943
+        ]
+      },
+      "properties": {
+        "id": "osm-way-557556742",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.562083,
+          23.054204
+        ]
+      },
+      "properties": {
+        "id": "osm-way-557557775",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.554381,
+          23.043521
+        ]
+      },
+      "properties": {
+        "id": "osm-way-557558188",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.571648,
+          23.048466
+        ]
+      },
+      "properties": {
+        "id": "osm-way-573008946",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.617463,
+          22.991555
+        ]
+      },
+      "properties": {
+        "id": "osm-way-584631607",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.594581,
+          23.06416
+        ]
+      },
+      "properties": {
+        "id": "osm-way-763335399",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.55642,
+          23.064278
+        ]
+      },
+      "properties": {
+        "id": "osm-way-763971900",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.618923,
+          22.976435
+        ]
+      },
+      "properties": {
+        "id": "osm-way-885948541",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.634215,
+          23.065474
+        ]
+      },
+      "properties": {
+        "id": "osm-way-916255770",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.633577,
+          22.984294
+        ]
+      },
+      "properties": {
+        "id": "osm-way-924843966",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.632644,
+          22.984273
+        ]
+      },
+      "properties": {
+        "id": "osm-way-924843967",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.559254,
+          23.003623
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1008895292",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.544676,
+          23.008197
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1019202194",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.550444,
+          23.010141
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1019202197",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.543053,
+          23.011935
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1019202205",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.540415,
+          23.026452
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1035161363",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.532776,
+          23.029213
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1035161368",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.532338,
+          23.021856
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1036620591",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.533132,
+          23.015465
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1036620595",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.543633,
+          23.055762
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1122775652",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.539179,
+          23.06247
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1123468879",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.537056,
+          23.051617
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1191865459",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.547534,
+          23.007262
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1199739136",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.542483,
+          23.049461
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1211935680",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.541862,
+          23.051271
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1211935685",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.53257,
+          23.029184
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1278848333",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.572191,
+          23.047207
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1289249841",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.557289,
+          23.050245
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1304800154",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.561172,
+          22.996089
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1349726067",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.613301,
+          23.05477
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1394973197",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.614528,
+          23.056839
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1394992785",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.566969,
+          23.030162
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1450460294",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.540303,
+          23.01006
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1539970804",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.576909,
+          23.024712
+        ]
+      },
+      "properties": {
+        "id": "osm-way-1546586595",
+        "type": "shade",
+        "verified": false,
+        "source": "OpenStreetMap"
+      }
+    }
+  ]
+}
