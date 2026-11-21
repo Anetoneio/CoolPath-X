@@ -1,6 +1,6 @@
 **A2 (Engine) Handoff Update**
 
-The engine is verified and ready on branch `a2-engine` (commit `3d33b83`). All 29 unit and regression tests pass in both `DATA_MODE=mock` and `DATA_MODE=real`. `python verify.py` passes all checks with `READY TO PUSH`.
+The engine is verified and ready on branch `a2-engine`. All 30 unit and regression tests pass in both `DATA_MODE=mock` and `DATA_MODE=real`. `python verify.py` passes all checks with `READY TO PUSH`.
 
 **Quick Run:**
 ```bash
@@ -10,10 +10,10 @@ python main.py          # live API at http://localhost:8000/docs
 ```
 
 **Key Limitations to Know:**
-1. **Exposure values are estimates:** All scores are 0–100 estimates; every score includes a plain-language `reason` string that UI must display.
-2. **Real mode currently falls back to mocks:** `data/processed/` is unpopulated, so real mode serves static mocks safely without failing.
-3. **Identical mock routes:** On current mock sites, Route B matches Route A with label `"Same as fastest route (no lower-exposure alternative)"`.
+1. **Mock spatial gaps & fallback:** 5 of 8 mock sites sit outside the 20 mock heat-grid cells and return the 50 mid-range fallback score. Real data from A1 is needed for full coverage.
+2. **Real mode serves mocks:** `data/processed/` is unpopulated; engine falls back to static mocks gracefully.
+3. **Multi-crew capacity & omissions:** Sites fitting across available crews are scheduled; any site exceeding capacity is omitted as `contracts/api.md` defines no omission field.
 
 **Next Steps:**
-- **A1:** Populate `data/processed/` and replace `TODO_VERIFY` values in `contracts/policy.yaml`. See `docs/status/A2.md` for the full placeholder registry.
-- **Frontend (B1):** Wire UI to show assignment `reason`, `rest_breaks`, `confidence`, and route `water_points_nearby`.
+- **A1:** Supply full-coverage processed data in `data/processed/` and replace `TODO_VERIFY` values in `contracts/policy.yaml`. See `docs/status/A2.md` for the placeholder registry.
+- **B1 (Frontend):** Wire UI to show assignment `reason`, `rest_breaks`, `confidence`, and route `water_points_nearby`.

@@ -145,3 +145,42 @@ def test_site_outside_heat_grid_fallback():
     assert score == MID_RANGE_EXPOSURE
     lower_reason = reason.lower()
     assert "estimate" in lower_reason or "fallback" in lower_reason
+
+
+def test_scheduler_multi_crew_assigns_all_fitting_sites():
+    """Multi-crew schedule must not drop sites when sufficient crew capacity exists.
+
+    With 2 crews and shift 07:00-12:00 (300 min each), S01 (180 min work + 20 min rest)
+    and S02 (120 min work + 15 min rest) both fit across the 2 crews.
+    """
+    from data_access import load_json
+    sites, _ = load_json("sites.json")
+    heat_grid, _ = load_json("heat_grid.geojson")
+
+    # With 1 crew, only S01 fits in 300 minutes (S01 takes 200 min, leaving 100 min, but S02 needs 135 min)
+    assign_1 = schedule(
+        date="2026-05-21",
+        shift_start="07:00",
+        shift_end="12:00",
+        crews=1,
+        site_ids=["S01", "S02"],
+        sites=sites,
+        heat_grid=heat_grid,
+    )
+    assert len(assign_1) == 1
+    assert assign_1[0]["site_id"] == "S01"
+
+    # With 2 crews, both sites must be scheduled
+    assign_2 = schedule(
+        date="2026-05-21",
+        shift_start="07:00",
+        shift_end="12:00",
+        crews=2,
+        site_ids=["S01", "S02"],
+        sites=sites,
+        heat_grid=heat_grid,
+    )
+    assert len(assign_2) == 2
+    assigned_ids = {a["site_id"] for a in assign_2}
+    assert assigned_ids == {"S01", "S02"}
+

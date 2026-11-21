@@ -196,6 +196,15 @@ The COOLPATH X engine is a FastAPI backend providing heat-aware scheduling and r
         "exposure_score": 50,
         "reason": "No heat-grid cell covers S01 (23.0297, 72.5571); using mid-range estimate. Scheduled 07:00-10:20 (180 min work, heavy). Rest every 90 min (20 min break). rest limits pending policy.yaml verification.",
         "confidence": 0.75
+      },
+      {
+        "site_id": "S02",
+        "start": "07:00",
+        "end": "09:00",
+        "rest_breaks": [],
+        "exposure_score": 56,
+        "reason": "Cell C09 LST 41.5C, heat index 62/100; forecast 18.5C adds 0 points. ESTIMATE only. Scheduled 07:00-09:00 (120 min work, moderate). Rest every 120 min (15 min break). rest limits pending policy.yaml verification.",
+        "confidence": 0.75
       }
     ]
   }
@@ -338,8 +347,10 @@ The `GET /confidence` endpoint aggregates 5 scoring components (satellite pass a
 
 ## 6. Known limitations (verified in code and output)
 1. **Real mode currently serves mocks**: `data/processed/` does not yet exist in the repository (pending A1 data pipeline completion). `data_access.py` safely falls back to `mocks/`.
-2. **`POST /schedule` with unknown site IDs**: Returns HTTP 200 with an empty list (`{"assignments": []}`) rather than an HTTP error, gracefully omitting unknown sites.
-3. **Route comparison on mock data**: In the current static mock layout for S01 to S02, only a single direct path exists within the `3.0 km` edge threshold. Route B returns the same geometry as Route A with the label:
+2. **Mock data spatial extent (mid-range fallback everywhere)**: 5 of the 8 mock sites (S01, S03, S04, S07, S08) sit outside the 20 mock heat-grid polygon cells. The engine's point-in-polygon math is verified correct, but because these sites sit in gaps or outside the grid bounds, they return the fallback score of 50 ("mid-range estimate"). Only S02 (C09), S05 (C01), and S06 (C05) receive cell-derived scores on mock data.
+3. **Shift start time vs exposure in simulation**: When comparing morning shift starts (e.g. 06:00 vs 07:00), forecast temperatures in Ahmedabad in November (~18.5°C to 19.3°C) are below the 25.0°C baseline, adding 0 adjustment points. If simulated sites also sit outside the mock heat-grid (like S01), total exposure remains at the flat 50 fallback score in both configurations.
+4. **`POST /schedule` multi-crew dispatch and unscheduled sites**: Multi-crew dispatch schedules all requested known sites that can fit across any available crew before `shift_end`. If a site cannot fit within the shift on any crew, it is omitted. `contracts/api.md` defines only `{"assignments": [...]}` with no separate field for unscheduled site omissions. Unknown site IDs return HTTP 200 with an empty list (`{"assignments": []}`) rather than an HTTP error.
+5. **Route comparison on mock data**: In the current static mock layout for S01 to S02, only a single direct path exists within the `3.0 km` edge threshold. Route B returns the same geometry as Route A with the label:
    `"Same as fastest route (no lower-exposure alternative)"`
-4. **Simulation summary threshold**: `_simulate_summary(a, b)` uses a 20% difference threshold (`SUMMARY_EXPOSURE_DIFF_PCT = 20`). Exposure differences under 20% state that the difference is below threshold; equal exposures return `"Both options have the same estimated exposure."`
-5. **Python 3.14 compatibility**: Requires `fastapi==0.165.0` and `httpx==0.28.1` due to Python 3.14 standard library and Starlette changes.
+6. **Simulation summary threshold**: `_simulate_summary(a, b)` uses a 20% difference threshold (`SUMMARY_EXPOSURE_DIFF_PCT = 20`). Exposure differences under 20% state that the difference is below threshold; equal exposures return `"Both options have the same estimated exposure."`
+7. **Python 3.14 compatibility**: Requires `fastapi==0.165.0` and `httpx==0.28.1` due to Python 3.14 standard library and Starlette changes.
