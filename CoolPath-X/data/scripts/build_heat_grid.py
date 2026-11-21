@@ -125,7 +125,7 @@ def generate_proxy_grid(seed: int = 42) -> dict:
     }
 
 
-def run_landsat_mode(project_root: Path, raw_dir: Path) -> dict:
+def run_landsat_mode(project_root: Path, raw_dir: Path, scene_id: str | None = None) -> dict:
     """Execute Landsat 8/9 Level-2 pipeline via STAC or local raw GeoTIFFs."""
     print("[build_heat_grid] Mode: LANDSAT (real satellite data pipeline)")
 
@@ -166,6 +166,12 @@ def run_landsat_mode(project_root: Path, raw_dir: Path) -> dict:
         },
     )
     items = sorted(list(search.items()), key=lambda x: float(x.properties.get("eo:cloud_cover", 100)))
+    # If a specific scene ID is requested, filter to that scene only
+    if scene_id:
+        items = [item for item in items if item.id == scene_id]
+        if not items:
+            print(f"[build_heat_grid] ERROR: Requested scene {scene_id} not found among candidate scenes.", file=sys.stderr)
+            sys.exit(1)
     print(f"[build_heat_grid] Found {len(items)} candidate scenes with cloud < 20%. Trying top {min(8, len(items))}...")
 
     d_lat = (AOI_LAT_MAX - AOI_LAT_MIN) / N_ROWS
@@ -325,6 +331,7 @@ def main():
     parser = argparse.ArgumentParser(description="Build heat grid GeoJSON (proxy or Landsat).")
     parser.add_argument("--mode", choices=["proxy", "landsat"], default="proxy", help="Execution mode (default: proxy)")
     parser.add_argument("--raw-dir", type=str, default="data/raw/landsat", help="Local raw Landsat directory")
+    parser.add_argument("--scene", type=str, default=None, help="Specific Landsat scene ID to process (optional)")
     args = parser.parse_args()
 
     project_root = Path(__file__).resolve().parents[2]
@@ -348,7 +355,7 @@ def main():
         print("[build_heat_grid] source='proxy', acquired_on='2026-05-20', cloud_pct=0")
 
     elif args.mode == "landsat":
-        grid_data = run_landsat_mode(project_root, raw_dir_path)
+        grid_data = run_landsat_mode(project_root, raw_dir_path, args.scene)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(grid_data, f, indent=2)
