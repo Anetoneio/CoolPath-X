@@ -1,0 +1,5 @@
+{
+  "a": { "total_exposure": 144, "finish_time": "11:45", "rest_compliant": true },
+  "b": { "total_exposure": 108, "finish_time": "10:45", "rest_compliant": true },
+  "summary": "Earlier start reduces estimated exposure by 25%"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "sites.json",
+  "description": "Array of work sites for Ahmedabad municipal outdoor crews.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["site_id", "name", "lat", "lon", "job_type", "duration_min", "intensity", "priority"],
+    "properties": {
+      "site_id": { "type": "string" },
+      "name": { "type": "string" },
+      "lat": { "type": "number" },
+      "lon": { "type": "number" },
+      "job_type": { "type": "string" },
+      "duration_min": { "type": "integer", "minimum": 0 },
+      "intensity": { "enum": ["light", "moderate", "heavy"] },
+      "priority": { "type": "integer", "minimum": 1, "maximum": 5 }
+    },
+    "additionalProperties": false
+  }
+}

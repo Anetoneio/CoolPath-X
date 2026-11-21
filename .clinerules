@@ -1,0 +1,10 @@
+# .clinerules — ASTRA COOLPATH X scaffold rules
+
+1. Only edit files inside the folder you were assigned. Never edit /contracts without explicit instruction.
+2. Every API response must match its file in /contracts. Check before marking a task done.
+3. Never hardcode values that belong in contracts/policy.yaml.
+4. Every score shown to users must carry a plain-language `reason` string.
+5. Exposure values are estimates. Label them as such in code comments and UI text.
+6. No secrets or API keys in the repo.
+7. Commit small and often. Ask before installing any new dependency.
+8. Before finishing any task, list which files you changed and which contract you verified against.

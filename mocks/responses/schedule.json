@@ -1,0 +1,22 @@
+{
+  "assignments": [
+    {
+      "site_id": "S01",
+      "start": "07:00",
+      "end": "09:30",
+      "rest_breaks": [ { "start": "09:30", "end": "09:45" } ],
+      "exposure_score": 72,
+      "reason": "High-LST cell near Ellis Bridge with limited shade; 15-min rest every 2.5 h",
+      "confidence": 0.78
+    },
+    {
+      "site_id": "S02",
+      "start": "09:45",
+      "end": "11:45",
+      "rest_breaks": [],
+      "exposure_score": 55,
+      "reason": "Moderate-intensity drain cleaning; shaded corridor along Sabarmati",
+      "confidence": 0.81
+    }
+  ]
+}

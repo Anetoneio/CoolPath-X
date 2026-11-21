@@ -1,0 +1,25 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [72.5714, 23.0225] },
+      "properties": { "id": "F01", "type": "water", "verified": true, "source": "AMC ward office" } },
+    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [72.5571, 23.0297] },
+      "properties": { "id": "F02", "type": "shade", "verified": true, "source": "AMC ward office" } },
+    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [72.5478, 23.0462] },
+      "properties": { "id": "F03", "type": "water", "verified": false, "source": "field survey" } },
+    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [72.5498, 23.0339] },
+      "properties": { "id": "F04", "type": "shade", "verified": true, "source": "AMC ward office" } },
+    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [72.6213, 22.9938] },
+      "properties": { "id": "F05", "type": "water", "verified": false, "source": "field survey" } },
+    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [72.5632, 23.0151] },
+      "properties": { "id": "F06", "type": "shade", "verified": true, "source": "AMC ward office" } },
+    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [72.5543, 23.0384] },
+      "properties": { "id": "F07", "type": "water", "verified": true, "source": "AMC ward office" } },
+    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [72.6180, 23.0685] },
+      "properties": { "id": "F08", "type": "shade", "verified": false, "source": "field survey" } },
+    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [72.6071, 23.0574] },
+      "properties": { "id": "F09", "type": "water", "verified": true, "source": "AMC ward office" } },
+    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [72.5714, 23.0050] },
+      "properties": { "id": "F10", "type": "shade", "verified": false, "source": "field survey" } }
+  ]
+}

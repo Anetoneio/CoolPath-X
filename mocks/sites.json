@@ -1,0 +1,18 @@
+[
+  { "site_id": "S01", "name": "Ellis Bridge road repair", "lat": 23.0297, "lon": 72.5571,
+    "job_type": "road repair", "duration_min": 180, "intensity": "heavy", "priority": 4 },
+  { "site_id": "S02", "name": "Sabarmati drain cleaning", "lat": 23.0462, "lon": 72.5478,
+    "job_type": "drain cleaning", "duration_min": 120, "intensity": "moderate", "priority": 3 },
+  { "site_id": "S03", "name": "C.G. Road sweeping", "lat": 23.0339, "lon": 72.5498,
+    "job_type": "sweeping", "duration_min": 90, "intensity": "light", "priority": 2 },
+  { "site_id": "S04", "name": "Maninagar tree pruning", "lat": 22.9938, "lon": 72.6213,
+    "job_type": "tree work", "duration_min": 150, "intensity": "heavy", "priority": 5 },
+  { "site_id": "S05", "name": "Paldi road patching", "lat": 23.0151, "lon": 72.5632,
+    "job_type": "road repair", "duration_min": 200, "intensity": "heavy", "priority": 4 },
+  { "site_id": "S06", "name": "Navrangpura drain clearing", "lat": 23.0384, "lon": 72.5543,
+    "job_type": "drain cleaning", "duration_min": 110, "intensity": "moderate", "priority": 3 },
+  { "site_id": "S07", "name": "Vastram tree work", "lat": 23.0685, "lon": 72.6180,
+    "job_type": "tree work", "duration_min": 130, "intensity": "heavy", "priority": 5 },
+  { "site_id": "S08", "name": "Bapunagar sweeping", "lat": 23.0574, "lon": 72.6071,
+    "job_type": "sweeping", "duration_min": 80, "intensity": "light", "priority": 1 }
+]
