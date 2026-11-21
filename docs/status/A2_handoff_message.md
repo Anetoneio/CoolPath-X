@@ -1,19 +1,18 @@
-**A2 (Engine) Handoff Update**
+A2 (Engine) update - branch a2-engine, code commit 346cdc1
 
-The engine is verified and ready on branch `a2-engine`. All 30 unit and regression tests pass in both `DATA_MODE=mock` and `DATA_MODE=real`. `python verify.py` passes all checks with `READY TO PUSH`.
+Ready: all 7 endpoints are live. 33 tests pass in mock and real mode, and `python verify.py` prints READY TO PUSH.
+Run it: cd engine; pip install -r requirements.txt; python main.py; Swagger UI at http://localhost:8000/docs
 
-**Quick Run:**
-```bash
-cd engine && python -m pip install -r requirements.txt
-python verify.py        # pre-push verification gate
-python main.py          # live API at http://localhost:8000/docs
-```
+New since last update:
+- /schedule now uses every requested crew (it used to drop a site when crews > 1).
+- A site outside every heat-grid cell uses the nearest cell if it is within 1 km, with lower confidence and a reason that names the cell and distance. Beyond 1 km the score is a flat mid-range 50.
 
-**Key Limitations to Know:**
-1. **Mock spatial gaps & fallback:** 5 of 8 mock sites sit outside the 20 mock heat-grid cells and return the 50 mid-range fallback score. Real data from A1 is needed for full coverage.
-2. **Real mode serves mocks:** `data/processed/` is unpopulated; engine falls back to static mocks gracefully.
-3. **Multi-crew capacity & omissions:** Sites fitting across available crews are scheduled; any site exceeding capacity is omitted as `contracts/api.md` defines no omission field.
+Limitations:
+1. All scores are estimates. The UI should show every reason and confidence value.
+2. DATA_MODE=real serves mocks until data/processed/ exists.
+3. On the mocks, S07 and S08 are over 1 km from the grid and get the flat 50.
+4. The forecast is for today (November), so time-of-day effects are small below the 25C baseline. /simulate on early-morning starts may show identical exposure.
+5. /route/compare can return identical routes (S01 to S02 is 66 vs 66). POST /schedule with an unknown site id returns an empty list with 200.
 
-**Next Steps:**
-- **A1:** Supply full-coverage processed data in `data/processed/` and replace `TODO_VERIFY` values in `contracts/policy.yaml`. See `docs/status/A2.md` for the placeholder registry.
-- **B1 (Frontend):** Wire UI to show assignment `reason`, `rest_breaks`, `confidence`, and route `water_points_nearby`.
+A1: replace the TODO_VERIFY keys in contracts/policy.yaml and make sure data/processed/ covers every site location.
+Frontend: show reason, confidence, rest_breaks and water_points_nearby.
