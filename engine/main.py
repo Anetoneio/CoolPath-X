@@ -9,11 +9,45 @@ values are ESTIMATES and carry a plain-language reason string.
 
 NUMERIC PLACEHOLDERS (pending A1 verification).
 """
+from __future__ import annotations
+
 import json
+import os
 from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+
+from config import DATA_MODE
+from data_access import load_json, load_response
+from forecast import load_forecast
+from scheduler import schedule as compute_schedule, _time_to_minutes, _add_minutes
+from routing import compare_routes
+from confidence import confidence
+
+APP_DIR = Path(__file__).resolve().parent
+
+app = FastAPI(title="COOLPATH X engine", version="0.2.0")
+
+ALLOWED_ORIGINS_ENV = os.getenv("ALLOWED_ORIGINS", "")
+allowed_origins = [o.strip() for o in ALLOWED_ORIGINS_ENV.split(",") if o.strip()]
+if not allowed_origins:
+    allowed_origins = ["http://localhost:5173", "http://localhost:3000"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,
+    allow_origin_regex=r"^https://.*\.vercel\.app$",
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+@app.get("/health")
+def get_health():
+    return JSONResponse(content={"status": "ok", "data_mode": DATA_MODE})
+
 
 SUMMARY_EXPOSURE_DIFF_PCT = 20  # PLACEHOLDER - pending A1 verification
 
@@ -29,24 +63,6 @@ def _simulate_summary(a: dict, b: dict) -> str:
                 f"A and B (below the {SUMMARY_EXPOSURE_DIFF_PCT}% threshold).")
     lower = "A" if ea < eb else "B"
     return f"Option {lower} has about {diff_pct}% lower estimated exposure (estimate)."
-
-from data_access import load_json, load_response
-from forecast import load_forecast
-from scheduler import schedule as compute_schedule, _time_to_minutes, _add_minutes
-from routing import compare_routes
-from confidence import confidence
-
-APP_DIR = Path(__file__).resolve().parent
-
-app = FastAPI(title="COOLPATH X engine", version="0.2.0")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 def _load(filename: str):
@@ -216,4 +232,5 @@ def post_simulate(payload: dict):
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)

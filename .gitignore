@@ -6,13 +6,15 @@ __pycache__/
 .venv/
 venv/
 .env.local
-engine/cache/
+engine/cache/*
+!engine/cache/forecast.json
 
 # Node
 node_modules/
 dist/
 build/
 *.local
+.vercel/
 
 # Data
 data/raw/

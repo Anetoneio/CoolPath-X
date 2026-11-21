@@ -1,10 +1,9 @@
 """Forecast fetch + cache for COOLPATH X.
 
-Fetches hourly temperature from Open-Meteo once and caches to
-engine/cache/forecast.json so the demo never depends on the network at
-request time. On any failure (no network, bad response), returns a safe
-default forecast and records that the source was unavailable so
-/confidence can downgrade the forecast_age component.
+Prefers reading the committed cache at engine/cache/forecast.json so the engine
+never depends on network or server disk writes at runtime. If missing or stale,
+falls back to a live Open-Meteo fetch in memory only with a short timeout.
+On any failure, returns a safe default forecast.
 """
 from __future__ import annotations
 
@@ -13,7 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Tuple
 
-import requests
+import httpx
 
 from config import APP_DIR, FORECAST_CACHE
 
@@ -28,6 +27,8 @@ FORECAST_URL = (
 )
 
 DEFAULT_TEMP_C = 35.0  # PLACEHOLDER - pending A1 verification (conservative hot default)
+FETCH_TIMEOUT_SEC = 5.0
+STALE_THRESHOLD_HOURS = 24.0
 
 
 def _now_iso() -> str:
@@ -35,10 +36,8 @@ def _now_iso() -> str:
 
 
 def fetch_forecast() -> dict:
-    """Fetch forecast from Open-Meteo. Returns the raw JSON or raises."""
-    import time
-
-    resp = requests.get(FORECAST_URL, timeout=15)
+    """Fetch forecast from Open-Meteo using httpx with short timeout. Returns raw JSON or raises."""
+    resp = httpx.get(FORECAST_URL, timeout=FETCH_TIMEOUT_SEC)
     resp.raise_for_status()
     data = resp.json()
     data["_cached_at"] = _now_iso()
@@ -63,39 +62,44 @@ def _default_forecast() -> dict:
     }
 
 
+def _is_stale(data: dict) -> bool:
+    cached_at = data.get("_cached_at")
+    if not cached_at:
+        return True
+    try:
+        cached_dt = datetime.fromisoformat(cached_at)
+        age_hours = (datetime.now(timezone.utc) - cached_dt).total_seconds() / 3600
+        return age_hours > STALE_THRESHOLD_HOURS
+    except (ValueError, TypeError):
+        return True
+
+
 def load_forecast() -> Tuple[dict, str]:
     """Return (forecast_dict, source_label).
 
-    Prefers the on-disk cache at engine/cache/forecast.json. If the cache
-    is missing or stale, attempts a one-time Open-Meteo fetch and writes
-    the cache. On any failure, returns a safe default forecast with
-    source_label "default-fallback".
+    Prefers the on-disk cache at engine/cache/forecast.json without writing to disk.
+    If the cache is missing or stale, attempts a live in-memory fetch with short
+    timeout (never writing to disk). On any failure, returns cached data if available
+    or a safe default forecast.
     """
+    cached_data = None
     if FORECAST_CACHE.exists():
         try:
             with FORECAST_CACHE.open("r", encoding="utf-8") as f:
-                data = json.load(f)
-            return data, "cache"
+                cached_data = json.load(f)
+            if not _is_stale(cached_data):
+                return cached_data, "cache"
         except (json.JSONDecodeError, OSError):
-            pass  # fall through to fetch
+            cached_data = None
 
-    # Try a one-time network fetch to (re)populate the cache.
+    # Missing or stale: try short in-memory network fetch (no disk write)
     try:
         data = fetch_forecast()
-        FORECAST_CACHE.parent.mkdir(parents=True, exist_ok=True)
-        with FORECAST_CACHE.open("w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2)
         return data, "open-meteo"
     except Exception:
-        data = _default_forecast()
-        # Persist the default so subsequent reads don't hammer the network.
-        try:
-            FORECAST_CACHE.parent.mkdir(parents=True, exist_ok=True)
-            with FORECAST_CACHE.open("w", encoding="utf-8") as f:
-                json.dump(data, f, indent=2)
-        except OSError:
-            pass
-        return data, "default-fallback"
+        if cached_data is not None:
+            return cached_data, "cache"
+        return _default_forecast(), "default-fallback"
 
 
 def temperature_at(forecast: dict, hour: int) -> float | None:

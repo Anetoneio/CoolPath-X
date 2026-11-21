@@ -6,29 +6,47 @@ Every load returns the parsed JSON document and a ``source`` string so
 callers (notably /confidence) can report where data actually came from.
 """
 import json
+import logging
 from pathlib import Path
 from typing import Tuple
 
 from config import DATA_MODE, MOCKS_DIR, PROCESSED_DIR, RESPONSES_DIR
 
+logger = logging.getLogger(__name__)
+
 
 def _resolve(filename: str) -> Tuple[Path, str]:
     """Return (path, source_label) for a data file.
 
-    In real mode, prefer data/processed/<filename>; fall back to mocks/
-    if it does not exist. In mock mode, always read mocks/.
+    In real mode, prefer data/processed/<filename>; if missing, log a warning
+    and fall back to mocks/ instead of crashing. In mock mode, read mocks/.
     """
     if DATA_MODE == "real":
         real_path = PROCESSED_DIR / filename
         if real_path.exists():
             return real_path, "real"
+        logger.warning(
+            "Real data file '%s' not found in %s; falling back to mock file in %s",
+            filename,
+            PROCESSED_DIR,
+            MOCKS_DIR,
+        )
+
     mock_path = MOCKS_DIR / filename
     if mock_path.exists():
         return mock_path, "mock"
+
     # Last resort: try real even in mock mode (should not happen).
     real_path = PROCESSED_DIR / filename
     if real_path.exists():
+        logger.warning(
+            "Mock data file '%s' not found in %s; falling back to real file in %s",
+            filename,
+            MOCKS_DIR,
+            PROCESSED_DIR,
+        )
         return real_path, "real"
+
     raise FileNotFoundError(f"Data file not found in mocks/ or data/processed/: {filename}")
 
 

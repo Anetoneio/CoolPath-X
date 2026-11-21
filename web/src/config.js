@@ -2,7 +2,7 @@
 // API_BASE_URL is the single base-URL constant; no other file defines a URL.
 // The engine serves mock endpoints at this base URL until the real engine is ready.
 // All heat and exposure values from the engine are estimates — label them "(estimate)" in UI.
-export const API_BASE_URL = 'http://localhost:8000';
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 export function api(path) {
   return `${API_BASE_URL}${path}`;
