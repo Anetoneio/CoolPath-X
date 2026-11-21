@@ -19,7 +19,7 @@ from typing import Any
 import yaml
 
 from config import POLICY_FILE
-from scoring import site_exposure
+from scoring import site_exposure, NEAREST_CELL_CONFIDENCE_PENALTY
 
 
 # ---------------------------------------------------------------------------
@@ -186,6 +186,8 @@ def schedule(
         )
 
         confidence = DEFAULT_CONFIDENCE
+        if "nearest-cell" in base_reason.lower() or "mid-range" in base_reason.lower():
+            confidence = max(0.0, DEFAULT_CONFIDENCE - NEAREST_CELL_CONFIDENCE_PENALTY)
 
         assignments.append({
             "site_id": sid,

@@ -193,9 +193,9 @@ The COOLPATH X engine is a FastAPI backend providing heat-aware scheduling and r
             "end": "08:50"
           }
         ],
-        "exposure_score": 50,
-        "reason": "No heat-grid cell covers S01 (23.0297, 72.5571); using mid-range estimate. Scheduled 07:00-10:20 (180 min work, heavy). Rest every 90 min (20 min break). rest limits pending policy.yaml verification.",
-        "confidence": 0.75
+        "exposure_score": 66,
+        "reason": "Nearest-cell estimate from C05 (256m away); Cell C05 LST 42.2C, heat index 66/100; forecast 18.5C adds 0 points; heavy-intensity job adds 5 points. ESTIMATE only. Scheduled 07:00-10:20 (180 min work, heavy). Rest every 90 min (20 min break). rest limits pending policy.yaml verification.",
+        "confidence": 0.6
       },
       {
         "site_id": "S02",
@@ -329,10 +329,11 @@ The COOLPATH X engine is a FastAPI backend providing heat-aware scheduling and r
   - Modified by job intensity (+5 points for heavy, -5 points for light).
 - **Route exposure score**:
   - The length-weighted mean of heat exposure values across all segments traversed in the road graph.
-- **Fallback (mid-range score)**:
-  - When a work site or route midpoint falls outside all available heat grid polygons, the engine applies a fallback score of **50** (mid-range).
-  - The score is always accompanied by a clear reason string flagging the fallback, e.g.:
-    `"No heat-grid cell covers S01 (23.0297, 72.5571); using mid-range estimate."`
+- **Fallback (nearest-cell & mid-range scores)**:
+  - When a work site or route midpoint falls outside all heat-grid cells:
+    - If the nearest cell boundary is within `NEAREST_CELL_MAX_KM` (1.0 km), the engine estimates exposure from that nearest cell, flags it in the reason string (`Nearest-cell estimate from <cell_id> (<dist_m>m away)`), and applies a confidence penalty (`NEAREST_CELL_CONFIDENCE_PENALTY = 0.15`).
+    - Beyond 1.0 km, the engine applies the neutral fallback score of **50** (mid-range estimate), stating:
+      `"No heat-grid cell covers <id> (<lat>, <lon>); using mid-range estimate."`
 
 ## 5. Provenance and confidence
 The `GET /confidence` endpoint aggregates 5 scoring components (satellite pass age, cloud coverage, grid resolution, forecast age, and agreement between satellite and forecast). It returns an overall 0–100 score and explicit human-readable `notes`:
@@ -347,7 +348,9 @@ The `GET /confidence` endpoint aggregates 5 scoring components (satellite pass a
 
 ## 6. Known limitations (verified in code and output)
 1. **Real mode currently serves mocks**: `data/processed/` does not yet exist in the repository (pending A1 data pipeline completion). `data_access.py` safely falls back to `mocks/`.
-2. **Mock data spatial extent (mid-range fallback everywhere)**: 5 of the 8 mock sites (S01, S03, S04, S07, S08) sit outside the 20 mock heat-grid polygon cells. The engine's point-in-polygon math is verified correct, but because these sites sit in gaps or outside the grid bounds, they return the fallback score of 50 ("mid-range estimate"). Only S02 (C09), S05 (C01), and S06 (C05) receive cell-derived scores on mock data.
+2. **Mock data spatial extent and nearest-cell fallback**: 5 of the 8 mock sites sit outside the 20 mock heat-grid polygon cells. With nearest-cell fallback within 1.0 km (`NEAREST_CELL_MAX_KM`):
+   - S01 (256 m from C05), S03 (20.5 m from C05), and S04 (133 m from C20) utilize nearest-cell estimates with penalized confidence (0.60).
+   - S07 (2.96 km away) and S08 (1.75 km away) exceed 1.0 km and receive the neutral 50 mid-range fallback score. Only real data from A1 will provide complete AOI coverage.
 3. **Shift start time vs exposure in simulation**: When comparing morning shift starts (e.g. 06:00 vs 07:00), forecast temperatures in Ahmedabad in November (~18.5°C to 19.3°C) are below the 25.0°C baseline, adding 0 adjustment points. If simulated sites also sit outside the mock heat-grid (like S01), total exposure remains at the flat 50 fallback score in both configurations.
 4. **`POST /schedule` multi-crew dispatch and unscheduled sites**: Multi-crew dispatch schedules all requested known sites that can fit across any available crew before `shift_end`. If a site cannot fit within the shift on any crew, it is omitted. `contracts/api.md` defines only `{"assignments": [...]}` with no separate field for unscheduled site omissions. Unknown site IDs return HTTP 200 with an empty list (`{"assignments": []}`) rather than an HTTP error.
 5. **Route comparison on mock data**: In the current static mock layout for S01 to S02, only a single direct path exists within the `3.0 km` edge threshold. Route B returns the same geometry as Route A with the label:

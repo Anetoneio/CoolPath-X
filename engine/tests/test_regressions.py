@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import math
+
 from main import _simulate_summary
 from routing import compare_routes
 from scheduler import schedule, _time_to_minutes, _load_policy, _intensity_limits
@@ -183,4 +185,75 @@ def test_scheduler_multi_crew_assigns_all_fitting_sites():
     assert len(assign_2) == 2
     assigned_ids = {a["site_id"] for a in assign_2}
     assert assigned_ids == {"S01", "S02"}
+
+
+def test_nearest_cell_20m_outside():
+    """A site 20 m outside a cell uses that cell and states it in the reason."""
+    test_grid = {
+        "type": "FeatureCollection",
+        "features": [{
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[[72.50, 23.00], [72.51, 23.00], [72.51, 23.01], [72.50, 23.01], [72.50, 23.00]]]
+            },
+            "properties": {"cell_id": "C_TEST", "lst_c": 42.0, "heat_index_0_100": 80}
+        }]
+    }
+    m_per_deg_lon = 111320.0 * math.cos(math.radians(23.0))
+    lon_20m = 72.50 - (20.0 / m_per_deg_lon)
+    site_20m = {"site_id": "S_20M", "name": "20m", "lon": lon_20m, "lat": 23.005, "intensity": "moderate"}
+
+    score, reason = site_exposure(site_20m, test_grid)
+
+    assert "nearest-cell estimate" in reason.lower()
+    assert "C_TEST" in reason
+    assert "20m" in reason
+    assert score != MID_RANGE_EXPOSURE
+
+
+def test_nearest_cell_5km_away():
+    """A site 5 km away from any cell exceeds NEAREST_CELL_MAX_KM and falls back to MID_RANGE_EXPOSURE."""
+    test_grid = {
+        "type": "FeatureCollection",
+        "features": [{
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[[72.50, 23.00], [72.51, 23.00], [72.51, 23.01], [72.50, 23.01], [72.50, 23.00]]]
+            },
+            "properties": {"cell_id": "C_TEST", "lst_c": 42.0, "heat_index_0_100": 80}
+        }]
+    }
+    m_per_deg_lon = 111320.0 * math.cos(math.radians(23.0))
+    lon_5km = 72.50 - (5000.0 / m_per_deg_lon)
+    site_5km = {"site_id": "S_5KM", "name": "5km", "lon": lon_5km, "lat": 23.005, "intensity": "moderate"}
+
+    score, reason = site_exposure(site_5km, test_grid)
+
+    assert score == MID_RANGE_EXPOSURE
+    assert "using mid-range estimate" in reason.lower()
+
+
+def test_site_inside_cell_unchanged():
+    """A site inside a cell uses that cell directly without nearest-cell prefix."""
+    test_grid = {
+        "type": "FeatureCollection",
+        "features": [{
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[[72.50, 23.00], [72.51, 23.00], [72.51, 23.01], [72.50, 23.01], [72.50, 23.00]]]
+            },
+            "properties": {"cell_id": "C_TEST", "lst_c": 42.0, "heat_index_0_100": 80}
+        }]
+    }
+    site_inside = {"site_id": "S_IN", "name": "Inside", "lon": 72.505, "lat": 23.005, "intensity": "moderate"}
+
+    score, reason = site_exposure(site_inside, test_grid)
+
+    assert "nearest-cell" not in reason.lower()
+    assert "Cell C_TEST" in reason
+    assert score == 70
+
 
