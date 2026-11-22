@@ -1,7 +1,7 @@
 # ASTRA COOLPATH X — scaffold
 
 Satellite-assisted heat-aware workforce scheduling platform for Ahmedabad municipal outdoor
-workers. Hackathon build (9 h). Contract-first: every API response matches /contracts.
+workers. Contract-first: every API response matches /contracts.
 
 ## Run the engine (FastAPI)
 
