@@ -2,6 +2,40 @@
 
 Base URL (dev): `http://localhost:8000`. Frontend dev server: `http://localhost:5173`.
 
+## GET /health
+Engine health check and runtime status.
+
+Request: none.
+
+Current response fields:
+- `status` (string): Health status of the service (e.g. `"ok"`).
+- `data_mode` (string): Current operational data mode (e.g. `"mock"` or `"live"`).
+
+Optional extra fields:
+- `commit` (string or null, optional): Git commit SHA of the engine build (null means unknown).
+- `data_as_of` (object or null, optional): Per-city mapping of city identifier to satellite scene/manifest date string (`YYYY-MM-DD`) indicating data freshness per city (null means unknown).
+
+Example response (current):
+```json
+{
+  "status": "ok",
+  "data_mode": "mock"
+}
+```
+
+Example response (with optional freshness fields):
+```json
+{
+  "status": "ok",
+  "data_mode": "mock",
+  "commit": "2247645",
+  "data_as_of": {
+    "ahmedabad": "2026-05-20"
+  }
+}
+```
+Note: Values in mocks are examples, not real data.
+
 ## GET /sites
 Serve static file `mocks/sites.json`.
 
@@ -111,7 +145,19 @@ Response:
 `exposure_score` is an estimate.
 
 ## GET /confidence
-Response:
+Serve confidence score and breakdown for heat and forecast data.
+
+Request: none.
+
+Response fields:
+- `overall_0_100` (integer): Overall composite confidence score between 0 and 100.
+- `components` (object): Sub-scores breakdown (`data_age`, `cloud`, `resolution`, `forecast_age`, `source_agreement`).
+- `notes` (array of strings): Human-readable notes explaining confidence factors.
+- `data_as_of` (string or null, optional): Satellite scene acquisition date from the manifest (`YYYY-MM-DD`). Optional and nullable; null means unknown.
+- `forecast_source` (string or null, optional): Origin of forecast data. Enum: `live`, `cache`, `stale-cache`, `default`. Optional and nullable; null means unknown.
+- `forecast_as_of` (string or null, optional): Timestamp of forecast data in ISO 8601 format (`YYYY-MM-DDTHH:MM:SSZ`). Optional and nullable; null means unknown.
+
+Example response (with optional fields):
 ```json
 {
   "overall_0_100": 72,
@@ -122,9 +168,13 @@ Response:
     "forecast_age": 70,
     "source_agreement": 65
   },
-  "notes": ["Heat grid from 2026-05-20 Landsat-9 pass; cloud cover < 10%"]
+  "notes": ["Heat grid from 2026-05-20 Landsat-9 pass; cloud cover < 10%"],
+  "data_as_of": "2026-05-20",
+  "forecast_source": "cache",
+  "forecast_as_of": "2026-05-21T06:00:00Z"
 }
 ```
+Note: Values in mocks are examples, not real data.
 
 ## POST /simulate
 Request:
