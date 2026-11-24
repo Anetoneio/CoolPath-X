@@ -11,11 +11,22 @@ Includes notes explaining data sources (mock vs real, forecast source).
 """
 from __future__ import annotations
 
+import json
 from datetime import datetime, timezone
 
-from config import DATA_MODE
+from config import DATA_MODE, PROCESSED_DIR
 from data_access import load_json
 from forecast import load_forecast
+
+# Manifest city for the Ahmedabad AOI. The optional /health commit field is
+# intentionally not populated.
+CITY_ID = "ahmedabad"
+_PUBLIC_FORECAST_SOURCE = {
+    "open-meteo": "live",
+    "default-fallback": "default",
+    "cache": "cache",
+    "stale-cache": "stale-cache",
+}
 
 
 # ---------------------------------------------------------------------------
@@ -201,3 +212,62 @@ def confidence(heat_grid_source: str, forecast_source: str) -> dict:
         "components": components,
         "notes": notes,
     }
+
+
+def data_as_of(heat_grid: dict | None = None) -> str | None:
+    """Satellite date: manifest acquired_on if that file exists, else the
+    loaded heat grid's acquired_on, else null.
+
+    A present manifest is authoritative even when acquired_on is null.
+    """
+    manifest_path = PROCESSED_DIR / CITY_ID / "manifest.json"
+    if manifest_path.is_file():
+        try:
+            with manifest_path.open("r", encoding="utf-8") as f:
+                manifest = json.load(f)
+        except (OSError, json.JSONDecodeError):
+            manifest = None
+        if isinstance(manifest, dict):
+            acquired = manifest.get("acquired_on")
+            return acquired if isinstance(acquired, str) and acquired else None
+
+    if heat_grid is None:
+        try:
+            heat_grid, _ = load_json("heat_grid.geojson")
+        except (OSError, json.JSONDecodeError, FileNotFoundError):
+            return None
+    for feature in heat_grid.get("features", []):
+        acquired = feature.get("properties", {}).get("acquired_on")
+        if isinstance(acquired, str) and acquired:
+            return acquired
+    return None
+
+
+def public_forecast_source(source_label: str) -> str | None:
+    """Map internal forecast labels to the /confidence enum.
+
+    open-meteo -> live and default-fallback -> default. Other labels pass
+    through. This is not applied inside load_forecast.
+    """
+    return _PUBLIC_FORECAST_SOURCE.get(source_label)
+
+
+def forecast_as_of(forecast: dict, source_label: str) -> str | None:
+    """UTC time the forecast was originally fetched, or null if unknown.
+
+    Uses the stored _cached_at value. Does not stamp the current time.
+    The synthetic default forecast was never fetched, so its time is null.
+    """
+    if source_label == "default-fallback":
+        return None
+    raw = forecast.get("_cached_at")
+    if not isinstance(raw, str) or not raw:
+        return None
+    try:
+        parsed = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    parsed = parsed.astimezone(timezone.utc).replace(microsecond=0)
+    return parsed.strftime("%Y-%m-%dT%H:%M:%SZ")
