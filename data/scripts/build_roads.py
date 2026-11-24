@@ -9,6 +9,7 @@ Handles both OSMnx 2.x and 1.x call signatures.
 NO synthetic data or silent fallbacks. If OSM pull fails, exits non-zero.
 """
 
+import argparse
 from pathlib import Path
 import sys
 import time
@@ -75,6 +76,10 @@ def fetch_graph():
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Build walkable road network graph from OSMnx.")
+    parser.add_argument("--write-manifest", action="store_true", default=False, help="Write data/processed/<city>/manifest.json after build")
+    args = parser.parse_args()
+
     project_root = Path(__file__).resolve().parents[2]
     output_path = project_root / "data" / "processed" / "roads.graphml"
 
@@ -96,6 +101,14 @@ def main():
     print(f"[build_roads] Successfully saved GraphML file: {output_path}")
     print(f"[build_roads] File size: {file_size_mb:.2f} MB")
     print(f"[build_roads] Final counts: {len(G)} nodes, {G.number_of_edges()} edges")
+
+    if args.write_manifest:
+        try:
+            sys.path.insert(0, str(Path(__file__).resolve().parent))
+            from write_manifest import write_manifest
+            write_manifest(city="ahmedabad", processed_dir=output_path.parent)
+        except Exception as exc:
+            print(f"[build_roads] Warning: failed to write manifest: {exc}", file=sys.stderr)
 
 
 if __name__ == "__main__":

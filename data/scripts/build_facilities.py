@@ -18,6 +18,7 @@ Strictly matches contracts/facilities.schema.json.
 Stdlib urllib only. NO synthetic data or silent fallbacks.
 """
 
+import argparse
 import json
 from pathlib import Path
 import sys
@@ -215,6 +216,10 @@ def process_overpass_data(data: dict) -> dict:
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Query OSM Overpass for facilities in Ahmedabad.")
+    parser.add_argument("--write-manifest", action="store_true", default=False, help="Write data/processed/<city>/manifest.json after build")
+    args = parser.parse_args()
+
     project_root = Path(__file__).resolve().parents[2]
     output_path = project_root / "data" / "processed" / "facilities.geojson"
 
@@ -235,6 +240,14 @@ def main():
         json.dump(geojson_data, f, indent=2)
 
     print(f"[build_facilities] Successfully wrote {len(geojson_data['features'])} facilities to {output_path}")
+
+    if args.write_manifest:
+        try:
+            sys.path.insert(0, str(Path(__file__).resolve().parent))
+            from write_manifest import write_manifest
+            write_manifest(city="ahmedabad", processed_dir=output_path.parent)
+        except Exception as exc:
+            print(f"[build_facilities] Warning: failed to write manifest: {exc}", file=sys.stderr)
 
 
 if __name__ == "__main__":
