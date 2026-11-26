@@ -1,0 +1,14 @@
+{
+  "city": "ahmedabad",
+  "source": "Landsat-8",
+  "scene_id": null,
+  "acquired_on": "2026-05-15",
+  "cloud_pct": 0,
+  "build_time": "2026-11-24T13:31:16.484614+00:00",
+  "git_commit": "bd2d61cfcc564fca558a8c1b99b59c0dab7eaacc",
+  "files": {
+    "heat_grid.geojson": "8b423609f856793c99ae7dd1c3191c3333886f233d51e4c58f9cf296f7e64b31",
+    "facilities.geojson": "1d74f7fc7e1aff972e0bfb01c761212ea092c087d260db58a7fcd971b418b216",
+    "roads.graphml": "adac2168d038617411061c3adb6022a9c1214b9cf43f4255e1400eb7e2776b99"
+  }
+}

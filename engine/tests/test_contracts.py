@@ -57,7 +57,13 @@ def test_get_confidence():
     r = client.get("/confidence")
     assert r.status_code == 200
     data = r.json()
-    assert set(data.keys()) == {"overall_0_100", "components", "notes"}
+    required = {"overall_0_100", "components", "notes"}
+    optional = {"data_as_of", "forecast_source", "forecast_as_of"}
+    assert required.issubset(data.keys())
+    assert set(data.keys()) <= required | optional
+    assert data.get("data_as_of") is None or isinstance(data.get("data_as_of"), str)
+    assert data.get("forecast_source") in (None, "live", "cache", "stale-cache", "default")
+    assert data.get("forecast_as_of") is None or isinstance(data.get("forecast_as_of"), str)
     assert set(data["components"].keys()) == {"data_age", "cloud", "resolution", "forecast_age", "source_agreement"}
     assert isinstance(data["notes"], list)
 

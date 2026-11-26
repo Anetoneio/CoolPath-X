@@ -8,6 +8,7 @@ Modes:
 
 Output strictly adheres to contracts/heat_grid.schema.json.
 """
+from __future__ import annotations
 
 import argparse
 import json
@@ -332,6 +333,7 @@ def main():
     parser.add_argument("--mode", choices=["proxy", "landsat"], default="proxy", help="Execution mode (default: proxy)")
     parser.add_argument("--raw-dir", type=str, default="data/raw/landsat", help="Local raw Landsat directory")
     parser.add_argument("--scene", type=str, default=None, help="Specific Landsat scene ID to process (optional)")
+    parser.add_argument("--write-manifest", action="store_true", default=False, help="Write data/processed/<city>/manifest.json after build")
     args = parser.parse_args()
 
     project_root = Path(__file__).resolve().parents[2]
@@ -360,6 +362,14 @@ def main():
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(grid_data, f, indent=2)
         print(f"[build_heat_grid] Successfully wrote real Landsat data to {output_path}")
+
+    if args.write_manifest:
+        try:
+            sys.path.insert(0, str(Path(__file__).resolve().parent))
+            from write_manifest import write_manifest
+            write_manifest(city="ahmedabad", processed_dir=output_path.parent)
+        except Exception as exc:
+            print(f"[build_heat_grid] Warning: failed to write manifest: {exc}", file=sys.stderr)
 
 
 if __name__ == "__main__":

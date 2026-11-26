@@ -23,7 +23,7 @@ from data_access import load_json, load_response
 from forecast import load_forecast
 from scheduler import schedule as compute_schedule, _time_to_minutes, _add_minutes
 from routing import compare_routes
-from confidence import confidence
+from confidence import confidence, data_as_of, forecast_as_of, public_forecast_source
 
 APP_DIR = Path(__file__).resolve().parent
 
@@ -46,7 +46,14 @@ app.add_middleware(
 
 @app.get("/health")
 def get_health():
-    return JSONResponse(content={"status": "ok", "data_mode": DATA_MODE})
+    # data_as_of is optional per contracts/api.md. The optional commit field
+    # is left out on purpose.
+    acquired = data_as_of()
+    return JSONResponse(content={
+        "status": "ok",
+        "data_mode": DATA_MODE,
+        "data_as_of": { "ahmedabad": acquired } if acquired else None,
+    })
 
 
 SUMMARY_EXPOSURE_DIFF_PCT = 20  # PLACEHOLDER - pending A1 verification
@@ -101,6 +108,10 @@ def get_confidence():
     heat_grid, hg_source = load_json("heat_grid.geojson")
     forecast, fc_source = load_forecast()
     result = confidence(hg_source, fc_source)
+    # Public labels only. load_forecast still returns open-meteo / default-fallback.
+    result["data_as_of"] = data_as_of(heat_grid)
+    result["forecast_source"] = public_forecast_source(fc_source)
+    result["forecast_as_of"] = forecast_as_of(forecast, fc_source)
     return JSONResponse(content=result)
 
 
