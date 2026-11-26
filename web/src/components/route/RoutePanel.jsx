@@ -34,13 +34,16 @@ export default function RoutePanel({ sites, facilities, onRoutes }) {
       onRoutes?.(routeList);
     } catch (err) {
       console.error('Route compare failed:', err);
-      setError(err.message);
+      setError(err.message || 'Failed to compare routes.');
     } finally {
       setLoading(false);
     }
   };
 
-  const siteOptions = sites.map((s) => ({ id: s.site_id, label: `${s.site_id} — ${s.name}` }));
+  const siteOptions = sites.map((s) => ({
+    id: s.site_id,
+    label: `${s.site_id} — ${s.name}`,
+  }));
 
   const waterPointNames = (ids) => {
     if (!ids || !facilityMap) return ids;
@@ -51,84 +54,121 @@ export default function RoutePanel({ sites, facilities, onRoutes }) {
   };
 
   return (
-    <div className="space-y-4">
-      <h2 className="font-semibold">Route Comparison</h2>
+    <section className="rounded-xl border border-white/10 bg-white/5 p-3.5 space-y-3.5">
+      <h2 className="text-sm font-semibold text-slate-100">Route Comparison</h2>
       <form onSubmit={handleCompare} className="space-y-3">
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2.5">
           <div>
-            <label className="block text-xs text-slate-500 mb-1">From site</label>
+            <label htmlFor="route-from" className="block text-xs text-slate-300 mb-1">
+              From site
+            </label>
             <select
+              id="route-from"
               value={fromSite}
               onChange={(e) => setFromSite(e.target.value)}
-              className="w-full border rounded px-2 py-1 text-sm"
+              className="w-full rounded-lg border border-white/15 bg-slate-950/60 px-2 py-1.5 text-xs text-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
             >
               <option value="">Select…</option>
               {siteOptions.map((o) => (
-                <option key={o.id} value={o.id}>{o.label}</option>
+                <option key={o.id} value={o.id}>
+                  {o.label}
+                </option>
               ))}
             </select>
           </div>
           <div>
-            <label className="block text-xs text-slate-500 mb-1">To site</label>
+            <label htmlFor="route-to" className="block text-xs text-slate-300 mb-1">
+              To site
+            </label>
             <select
+              id="route-to"
               value={toSite}
               onChange={(e) => setToSite(e.target.value)}
-              className="w-full border rounded px-2 py-1 text-sm"
+              className="w-full rounded-lg border border-white/15 bg-slate-950/60 px-2 py-1.5 text-xs text-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
             >
               <option value="">Select…</option>
               {siteOptions.map((o) => (
-                <option key={o.id} value={o.id}>{o.label}</option>
+                <option key={o.id} value={o.id}>
+                  {o.label}
+                </option>
               ))}
             </select>
           </div>
         </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-xs text-slate-500">Depart time</label>
+
+        <div>
+          <label htmlFor="route-depart" className="block text-xs text-slate-300 mb-1">
+            Depart time
+          </label>
           <input
+            id="route-depart"
             type="time"
             value={departTime}
             onChange={(e) => setDepartTime(e.target.value)}
-            className="w-full border rounded px-2 py-1 text-sm"
+            className="w-full rounded-lg border border-white/15 bg-slate-950/60 px-2.5 py-1.5 text-xs text-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
           />
         </div>
+
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-slate-900 text-white px-4 py-2 rounded disabled:bg-slate-400 text-sm font-medium"
+          className="w-full rounded-xl bg-sky-500 px-4 py-2 text-xs sm:text-sm font-semibold text-slate-950 hover:bg-sky-400 disabled:bg-slate-700 disabled:text-slate-400 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
         >
           {loading ? 'Comparing…' : 'Compare routes'}
         </button>
       </form>
 
       {error && (
-        <div className="p-2 rounded bg-red-50 border border-red-200 text-red-800 text-sm">
+        <div
+          role="alert"
+          className="p-2.5 rounded-lg bg-red-950/80 border border-red-400/40 text-red-100 text-xs"
+        >
           {error}
         </div>
       )}
 
       {routes.length > 0 && (
-        <div className="border rounded p-3 bg-slate-50 space-y-3">
-          <h3 className="font-semibold text-slate-900">Routes</h3>
+        <div className="space-y-2.5">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-300">
+            Routes
+          </h3>
           {routes.map((route) => {
             const isLower = route.id === 'R01';
             const nearby = waterPointNames(route.water_points_nearby);
             return (
-              <div key={route.id} className={`border rounded p-2 ${isLower ? 'border-green-200 bg-green-5' : 'border-orange-200 bg-orange-5'}`}>
-                <div className="flex justify-between items-start mb-1">
-                  <div className="font-medium">{route.label}</div>
-                  <span className={`text-xs font-medium ${isLower ? 'text-green-700' : 'text-orange-700'}`}>
+              <div
+                key={route.id}
+                className={`rounded-lg border p-2.5 space-y-1.5 ${
+                  isLower
+                    ? 'border-emerald-400/35 bg-emerald-950/35'
+                    : 'border-orange-400/35 bg-orange-950/35'
+                }`}
+              >
+                <div className="flex justify-between items-start gap-2">
+                  <div className="text-xs sm:text-sm font-medium text-slate-100">
+                    {route.label}
+                  </div>
+                  <span
+                    className={`text-[11px] font-medium shrink-0 ${
+                      isLower ? 'text-emerald-300' : 'text-orange-300'
+                    }`}
+                  >
                     {isLower ? 'Lower exposure' : 'Faster / direct'}
                   </span>
                 </div>
-                <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 mb-1">
+                <div className="grid grid-cols-2 gap-2 text-xs text-slate-300">
                   <div>Distance: {route.distance_km} km</div>
                   <div>Duration: {route.duration_min} min</div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-medium">Exposure: {route.exposure_score}</span>
-                  <span className="text-[10px] text-orange-500 bg-orange-100 px-1.5 py-0.5 rounded">(estimate)</span>
+                  <span className="text-xs font-medium text-slate-200">
+                    Exposure: {route.exposure_score}
+                  </span>
+                  <span className="text-[11px] text-amber-300 bg-amber-950/60 border border-amber-400/25 px-1.5 py-0.5 rounded">
+                    (estimate)
+                  </span>
                 </div>
-                <div className="text-xs text-slate-500 mt-1">
+                <div className="text-xs text-slate-300">
                   Nearby water: {nearby.length > 0 ? nearby.join(', ') : 'none'}
                 </div>
               </div>
@@ -136,7 +176,7 @@ export default function RoutePanel({ sites, facilities, onRoutes }) {
           })}
         </div>
       )}
-    </div>
+    </section>
   );
 }
 

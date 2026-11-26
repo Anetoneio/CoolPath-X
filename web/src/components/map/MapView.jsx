@@ -8,22 +8,35 @@ import {
   Polyline,
 } from 'react-leaflet';
 
-// Colour ramp for heat_index_0_100 (exposure values are estimates).
+// TODO-VERIFY: Confirm CARTO Basemaps production terms & key requirement before launch.
+// Terms URL: https://carto.com/legal/basemap-terms/
+// Attribution URL: https://carto.com/attributions
+// Search summary indicates free tier up to 5M non-commercial / 1M commercial tile requests/month
+// and notes an API key (?key=...) may be required; full verbatim terms text is UNVERIFIED.
+const BASEMAP_KEY = import.meta.env.VITE_BASEMAP_KEY;
+const BASEMAP_URL = BASEMAP_KEY
+  ? `https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=${BASEMAP_KEY}`
+  : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+
+// Continuous cool-to-hot color ramp for heat_index_0_100 (exposure values are estimates).
+// Tuned for high contrast on the dark CARTO basemap.
 function heatColor(index) {
-  if (index >= 80) return '#7f0000';
-  if (index >= 70) return '#ff4d4d';
-  if (index >= 60) return '#ffa64d';
-  if (index >= 50) return '#ffe066';
-  return '#d9f2a6';
+  if (index >= 80) return '#dc2626';
+  if (index >= 70) return '#f97316';
+  if (index >= 60) return '#facc15';
+  if (index >= 50) return '#34d399';
+  return '#38bdf8';
 }
 
 function heatStyle(feature) {
   const index = feature.properties?.heat_index_0_100 ?? 50;
+  const color = heatColor(index);
   return {
-    color: heatColor(index),
-    weight: 1,
-    fillColor: heatColor(index),
-    fillOpacity: 0.5,
+    color,
+    weight: 1.5,
+    opacity: 0.85,
+    fillColor: color,
+    fillOpacity: 0.52,
   };
 }
 
@@ -44,13 +57,13 @@ function facilityStyle(feature) {
   const props = feature.properties || {};
   const isWater = props.type === 'water';
   const isVerified = props.verified === true;
-  const baseColor = isWater ? '#2196F3' : '#4CAF50';
+  const baseColor = isWater ? '#38bdf8' : '#4ade80';
   return {
     radius: 8,
     color: baseColor,
     weight: 2,
     fillColor: baseColor,
-    fillOpacity: isVerified ? 0.7 : 0.2,
+    fillOpacity: isVerified ? 0.75 : 0.2,
     dashArray: isVerified ? undefined : '5, 5',
   };
 }
@@ -61,8 +74,10 @@ export default function MapView({ sites, facilities, heatGrid, heatVisible, rout
   return (
     <MapContainer center={CENTER} zoom={12} className="absolute inset-0">
       <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; OpenStreetMap contributors'
+        url={BASEMAP_URL}
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        subdomains="abcd"
+        maxZoom={20}
       />
 
       {/* Heat layer (estimate) */}
@@ -88,13 +103,13 @@ export default function MapView({ sites, facilities, heatGrid, heatVisible, rout
             dashArray={style.dashArray}
           >
             <Popup>
-              <div className="p-1">
-                <div className="font-bold">{props.id}</div>
-                <div className="text-xs capitalize">{props.type}</div>
-                <div className={`text-xs font-medium ${isVerified ? 'text-green-700' : 'text-orange-600'}`}>
+              <div className="p-1 space-y-0.5">
+                <div className="font-semibold text-slate-100">{props.id}</div>
+                <div className="text-xs capitalize text-slate-300">{props.type}</div>
+                <div className={`text-xs font-medium ${isVerified ? 'text-emerald-400' : 'text-amber-400'}`}>
                   {isVerified ? 'Verified' : 'Unverified'}
                 </div>
-                <div className="text-xs text-slate-500">{props.source}</div>
+                <div className="text-xs text-slate-400">{props.source}</div>
               </div>
             </Popup>
           </CircleMarker>
@@ -105,9 +120,9 @@ export default function MapView({ sites, facilities, heatGrid, heatVisible, rout
       {sites.map((site) => (
         <Marker key={site.site_id} position={[site.lat, site.lon]}>
           <Popup>
-            <div className="p-1">
-              <div className="font-bold">{site.name}</div>
-              <div className="text-xs text-slate-600">
+            <div className="p-1 space-y-0.5">
+              <div className="font-semibold text-slate-100">{site.name}</div>
+              <div className="text-xs text-slate-300">
                 {site.job_type} &middot; intensity: {site.intensity}
               </div>
             </div>
@@ -122,9 +137,9 @@ export default function MapView({ sites, facilities, heatGrid, heatVisible, rout
           <Polyline
             key={route.id}
             positions={toLatLngs(route.geometry.coordinates)}
-            color={isLowerExposure ? '#22c55e' : '#f97316'}
+            color={isLowerExposure ? '#4ade80' : '#fb923c'}
             weight={4}
-            opacity={0.8}
+            opacity={0.9}
             dashArray={isLowerExposure ? undefined : '6, 6'}
           />
         );
