@@ -7,15 +7,19 @@ and data_access fallback behaviour.
 """
 from __future__ import annotations
 
+import json
+from datetime import datetime, timezone
+
 from fastapi.testclient import TestClient
 
+import forecast as forecast_mod
 from main import app
 from scoring import site_exposure, route_exposure, cell_for_point, point_in_polygon
 from scheduler import schedule, _intensity_limits, _time_to_minutes
 from routing import compare_routes, _haversine_km, _water_nearby
 from confidence import confidence
 from data_access import load_json
-from forecast import load_forecast
+from forecast import clear_memory_cache, load_forecast
 
 client = TestClient(app)
 
@@ -231,10 +235,34 @@ def test_data_access_loads_mocks():
     assert source == "mock"
 
 
-def test_forecast_loads():
-    forecast, source = load_forecast()
-    assert "hourly" in forecast
-    assert source in ("cache", "open-meteo", "default-fallback")
-    hourly = forecast["hourly"]
-    assert "temperature_2m" in hourly
-    assert len(hourly["temperature_2m"]) > 0
+def test_forecast_loads(tmp_path, monkeypatch):
+    cache_file = tmp_path / "forecast.json"
+    payload = {
+        "hourly": {
+            "time": ["2026-05-21T06:00"],
+            "temperature_2m": [34.0],
+            "relative_humidity_2m": [40],
+            "apparent_temperature": [36.0],
+        },
+        "_cached_at": datetime.now(timezone.utc).isoformat(),
+        "_source": "open-meteo",
+    }
+    cache_file.write_text(json.dumps(payload), encoding="utf-8")
+
+    def _forbid_fetch(*_args, **_kwargs):
+        raise AssertionError("fetch_forecast must not be called when cache is fresh")
+
+    monkeypatch.setattr(forecast_mod, "FORECAST_CACHE", cache_file)
+    monkeypatch.setattr(forecast_mod, "fetch_forecast", _forbid_fetch)
+
+    clear_memory_cache()
+    try:
+        data, source = load_forecast()
+        assert "hourly" in data
+        assert source == "cache"
+        assert source in ("cache", "open-meteo", "stale-cache", "default-fallback")
+        hourly = data["hourly"]
+        assert "temperature_2m" in hourly
+        assert len(hourly["temperature_2m"]) > 0
+    finally:
+        clear_memory_cache()
